@@ -7,6 +7,7 @@
 
 import UIKit
 import GridLayout
+import SegmentedPickerView
 
 protocol HomeViewControllerProtocol: AnyObject {
     func showError(
@@ -54,7 +55,28 @@ extension HomeViewController: HomeViewControllerProtocol {
     }
     
     func setupMainGrid() {
+        let segmentedPicker = SegmentedPickerView(
+            segmentedFilters: ["All", "Music"],
+            moreFilters: ["Album", "Movie"],
+            moreButtonTitle: "More",
+            moreButtonImage: .init(systemName: "line.3.horizontal.decrease")
+        )
+        let grid = Grid.vertical {
+            segmentedPicker
+                .Expanded(verticalAlignment: .constantTop(height: 50))
+        }
         
+        segmentedPicker.backgroundColor = UIColor(
+            hue: 240.0/360.0,
+            saturation: 0,
+            brightness: 0.94,
+            alpha: 1
+        )
+        segmentedPicker.popupCancelColor = .systemRed
+        
+        view.addSubview(grid)
+        grid.translatesAutoresizingMaskIntoConstraints = false
+        NSLayoutConstraint.expand(grid, to: view.safeAreaLayoutGuide)
     }
     
     func showError(

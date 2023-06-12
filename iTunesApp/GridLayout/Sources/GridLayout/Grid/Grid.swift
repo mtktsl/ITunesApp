@@ -113,9 +113,6 @@ public class Grid: UIView {
                 }
                 
             case .auto(let view, _, _, let maxSize, let margin):
-                if view.isHidden {
-                    continue
-                }
                 let size = calculateAutoCellSize(view: view,
                                                  maxSize: maxSize,
                                                  margin: margin)
@@ -141,9 +138,8 @@ public class Grid: UIView {
         let grid = view as? Grid
         let imageView = view as? UIImageView
         let stackView = view as? UIStackView
-        let segment = view as? UISegmentedControl
         
-        if label == nil && grid == nil && imageView == nil && stackView == nil && segment == nil {
+        if label == nil && grid == nil && imageView == nil && stackView == nil {
             return .zero
         }
         
@@ -229,12 +225,11 @@ public class Grid: UIView {
     private func calculateTotalConstants() {
         totalGridConstants = 0
         for cell in cells {
-            if cell.view.isHidden { continue }
             switch cell.gridLength {
             case .constant(let value, _, _, _, _):
                 totalGridConstants += value
                 
-                //Note: Change this the way that it wouldn't be bigger than grid's own frame
+                //Max pencere boyutunu gecmeyecek sekilde ayarla
             case .auto(let view, _, _, let maxSize, let margin):
                 let calculatedSize = (gridType == .column) ?
                 CGSize(width: self.bounds.size.width - (margin.left + margin.right),
@@ -316,12 +311,7 @@ public class Grid: UIView {
                 let limit = self.bounds.size.height - cell.margin.top - cell.margin.bottom
                 var height = (cell.value > limit) ? limit : cell.value
                 height = (maxSize > 0 && maxSize < height) ? maxSize : height
-                
-                if cell.view.isHidden {
-                    height = .zero
-                } else {
-                    height = calculateVerticalSpacing(cell: cell, size: height)
-                }
+                height = calculateVerticalSpacing(cell: cell, size: height)
                 
                 let constraint = cell.view.heightAnchor.constraint(equalToConstant: height)
                 cell.constraints.append(constraint)
@@ -330,12 +320,7 @@ public class Grid: UIView {
                 let limit = self.bounds.size.width - cell.margin.right - cell.margin.left
                 var width = (cell.value > limit) ? limit : cell.value
                 width = (maxSize > 0 && maxSize < width) ? maxSize : width
-                
-                if cell.view.isHidden {
-                    width = .zero
-                } else {
-                    width = calculateHorizontalSpacing(cell: cell, size: width)
-                }
+                width = calculateHorizontalSpacing(cell: cell, size: width)
                 
                 let constraint = cell.view.widthAnchor.constraint(equalToConstant: width)
                 cell.constraints.append(constraint)
@@ -496,6 +481,9 @@ public class Grid: UIView {
                         marginHeight = 0
                     }
                     
+                    //print("height:", height)
+                    //print("marginHeight:", marginHeight)
+                    
                     let heightConstraint = cells[i].view.heightAnchor.constraint(equalToConstant: height > marginHeight ? marginHeight : height)
                     
                     cells[i].constraints.append(bottomConstraint)
@@ -511,32 +499,16 @@ public class Grid: UIView {
     private func layoutArrangedCell(source: GridCell, target: GridCell) {
         if gridType == .column {
             
-            var topConstant = source.margin.top + source.spacing.top
             
-            switch target.gridLength {
-            case .auto(_, _, _, _, _):
-                if target.view.isHidden {
-                    topConstant -= target.margin.top
-                }
-            default:
-                topConstant += target.margin.bottom + target.spacing.bottom
-            }
+            let topConstant = source.margin.top + target.margin.bottom + target.spacing.bottom + source.spacing.top
             
             let constraint = source.view.topAnchor.constraint(equalTo: target.view.bottomAnchor, constant: topConstant)
             source.constraints.append(constraint)
             constraint.isActive = true
             
         } else {
-            var leftConstant = source.margin.left + source.spacing.left
             
-            switch target.gridLength {
-            case .auto(_, _, _, _, _):
-                if target.view.isHidden {
-                    leftConstant -= target.margin.left
-                }
-            default:
-                leftConstant += target.margin.right + target.spacing.right
-            }
+            let leftConstant = source.margin.left + target.margin.right + target.spacing.right + source.spacing.left
             
             let constraint = source.view.leadingAnchor.constraint(equalTo: target.view.trailingAnchor, constant: leftConstant)
             source.constraints.append(constraint)
@@ -545,7 +517,6 @@ public class Grid: UIView {
     }
     
     private func calculateVerticalSpacing(cell: GridCell, size: CGFloat) -> CGFloat {
-        //if cell.view.isHidden { return .zero }
         switch cell.verticalAlignment {
         case .constantTop(let h):
             let diff = (h > size) ? 0 : size - h
@@ -571,7 +542,6 @@ public class Grid: UIView {
     }
     
     private func calculateHorizontalSpacing(cell: GridCell, size: CGFloat) -> CGFloat {
-        //if cell.view.isHidden { return .zero }
         switch cell.horizontalAlignment {
         case .constantLeft(let w):
             let diff = (w > size) ? 0 : size - w
@@ -594,13 +564,5 @@ public class Grid: UIView {
         case .fill:
             return size < 0 ? 0 : size
         }
-    }
-    
-    public override func systemLayoutSizeFitting(_ targetSize: CGSize) -> CGSize {
-        return sizeThatFits(targetSize)
-    }
-    
-    override public func systemLayoutSizeFitting(_ targetSize: CGSize, withHorizontalFittingPriority horizontalFittingPriority: UILayoutPriority, verticalFittingPriority: UILayoutPriority) -> CGSize {
-        return sizeThatFits(targetSize)
     }
 }

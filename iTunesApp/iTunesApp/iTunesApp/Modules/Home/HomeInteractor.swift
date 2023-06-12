@@ -43,17 +43,17 @@ extension HomeInteractor: HomeInteractorProtocol {
         print(testURLString)
         
         service.performQuery(
-            .init(term: "blood",
+            .init(term: "tarkan",
                   country: "tr",
-                  entity: .musicTrack,
-                  attribute: .allTrackTerm)
+                  entity: .allTrack,
+                  attribute: .songTerm)
         ) { [weak self] result in
             guard let _ = self else { return }
             switch result {
             case .success(let data):
-                if let first = data.results?.last {
+                if let first = data.results?.first {
                     //print(first)
-                    print(data.resultCount)
+                    //print(data.resultCount)
                 } else {
                     print("nil")
                 }
