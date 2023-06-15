@@ -16,26 +16,37 @@ extension MainPresenter {
 }
 
 protocol MainPresenterProtocol: AnyObject {
-    
+    func viewDidLoad()
+    func detailRequest()
 }
 
 final class MainPresenter {
     unowned var view: MainViewControllerProtocol!
     let interactor: MainInteractorProtocol!
+    let router: MainRouterProtocol!
     
     private var isPopupOpen = false
     
     init(
         view: MainViewControllerProtocol!,
-        interactor: MainInteractorProtocol!
+        interactor: MainInteractorProtocol!,
+        router: MainRouterProtocol!
     ) {
         self.view = view
         self.interactor = interactor
+        self.router = router
     }
 }
 
 extension MainPresenter: MainPresenterProtocol {
-
+    func detailRequest() {
+        router.navigate(.detailPage)
+    }
+    
+    func viewDidLoad() {
+        let imageNames = interactor.getTabImageNames()
+        view.setupTabBar(imageNames: imageNames)
+    }
 }
 
 extension MainPresenter: MainInteractorOutputProtocol {

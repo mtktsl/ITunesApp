@@ -20,17 +20,32 @@ class LoadingView {
     func configure() {
         blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurView.translatesAutoresizingMaskIntoConstraints = false
-        blurView.frame = UIWindow(frame: UIScreen.main.bounds).frame
-        activityIndicator.center = blurView.center
         activityIndicator.hidesWhenStopped = true
         
         //Target of this package is IOS v12 so we have to use "whiteLarge" instead of "large"
         activityIndicator.style = .whiteLarge
         blurView.contentView.addSubview(activityIndicator)
+        blurView.layer.masksToBounds = true
     }
     
     func startLoading() {
-        UIApplication.shared.windows.first?.addSubview(blurView)
+        guard let mainWindow = UIApplication.shared.windows.first else { return }
+        blurView.frame = UIWindow(frame: UIScreen.main.bounds).frame
+        activityIndicator.center = blurView.center
+        mainWindow.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.startAnimating()
+    }
+    
+    func startLoading(_ frame: CGRect, cornerRadius: CGFloat) {
+        guard let mainWindow = UIApplication.shared.windows.first else { return }
+        blurView.frame = frame
+        blurView.layer.cornerRadius = cornerRadius
+        activityIndicator.center = CGPoint(
+            x: frame.size.width / 2,
+            y: frame.size.height / 2
+        )
+        mainWindow.addSubview(blurView)
         blurView.translatesAutoresizingMaskIntoConstraints = false
         activityIndicator.startAnimating()
     }

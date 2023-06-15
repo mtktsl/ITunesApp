@@ -33,25 +33,44 @@ public protocol SegmentedPickerViewDelegate: AnyObject {
     func onSelectionChanged(_ newSelection: String)
 }
 
+internal protocol SegmentedPickerViewProtocol: AnyObject {
+    
+    var pickerWidth: CGFloat { get }
+    var pickerHeight: CGFloat { get }
+    var popupCancelColor: UIColor { get }
+    
+    func setupMoreButton(title: String, image: UIImage?)
+    func setupSegmentedControl()
+    func setupMainGrid(_ isMoreButtonActive: Bool)
+    func changeSegment(_ filters: [String], buttonTitle: String)
+    func toggleMoreButton(_ title: String, selected: Bool)
+}
+
 public class SegmentedPickerView: UIView {
     public let segmentedControl: UISegmentedControl
     
     public let moreButton: UIButton
-    private var moreButtonTitle: String
-    public var moreButtonImage: UIImage?
     
-    public var pickerTitle: String
-    public let pickerView: UIPickerView
+    //-----------
+    //private var moreButtonTitle: String
+    //public var moreButtonImage: UIImage?
     
-    public let segmentedFilters: [String]?
-    public let moreFilters: [String]?
+    //public var pickerTitle: String
+    
+    //public let segmentedFilters: [String]?
+    //public let moreFilters: [String]?
     
     public var selectedSegmentTintColor: UIColor = .white
     public var selectedSegmentTitleColor: UIColor = .black
     public var normalTitleColor: UIColor = .black
     public var popupCancelColor: UIColor = .lightGray
+    //--------------
+    
+    var presenter: SegmentedPickerPresenterProtocol!
     
     public weak var delegate: SegmentedPickerViewDelegate?
+    
+    var didInitOnce: Bool = false
 
     private var mainGrid: Grid!
     
@@ -63,37 +82,104 @@ public class SegmentedPickerView: UIView {
         return (self.window?.screen.bounds.size.height ?? 300.0) / 5
     }
     
-    public init(
-        segmentedFilters: [String]? = nil,
-        moreFilters: [String]? = nil,
-        moreButtonTitle: String = "More",
-        moreButtonImage: UIImage? = nil,
-        pickerTitle: String = "Select Filter"
+    public static func build(
+        segmentedFilters: [String]?,
+        moreFilters: [String]?,
+        moreButtonTitle: String,
+        moreButtonImage: UIImage?,
+        pickerTitle: String
+    ) -> SegmentedPickerView {
+        let view = SegmentedPickerRouter.createModule(
+            .init(
+                segmentedFilters: segmentedFilters,
+                moreFilters: moreFilters,
+                moreButtonTitle: moreButtonTitle,
+                moreButtonImage: moreButtonImage,
+                pickerTitle: pickerTitle
+            )
+        )
+        return view
+    }
+    
+    internal init(
+        _ config: SegmentedPickerConfig
     ) {
-        self.segmentedFilters = segmentedFilters
-        self.moreFilters = moreFilters
-        self.moreButtonTitle = moreButtonTitle
-        self.pickerTitle = pickerTitle
-        self.moreButtonImage = moreButtonImage
+        //self.segmentedFilters = config.segmentedFilters
+        //self.moreFilters = config.moreFilters
+        //self.moreButtonTitle = config.moreButtonTitle
+        //self.pickerTitle = config.pickerTitle
+        //self.moreButtonImage = config.moreButtonImage
         
-        segmentedControl = UISegmentedControl(items: segmentedFilters)
+        segmentedControl = UISegmentedControl(items: config.segmentedFilters)
         moreButton = UIButton(frame: .zero)
-        pickerView = UIPickerView(frame: .zero)
         
         super.init(frame: .zero)
-        
-        setupMoreButton()
-        setupSegmentedControl()
-        setupMainGrid()
+        self.backgroundColor = Constants.segmentGray
     }
     
     required init?(coder: NSCoder) {
         fatalError("init(coder:) has not been implemented")
     }
     
-    private func setupMoreButton() {
-        moreButton.setTitle(moreButtonTitle, for: .normal)
-        moreButton.setImage(moreButtonImage, for: .normal)
+    override public func willMove(toSuperview newSuperview: UIView?) {
+        if !didInitOnce {
+            presenter.viewDidInit()
+        }
+        didInitOnce = false
+    }
+    
+    override public func sizeThatFits(_ size: CGSize) -> CGSize {
+        let segmentSize = segmentedControl.sizeThatFits(size)
+        let buttonSize = moreButton.sizeThatFits(size)
+        
+        return .init(
+            width: max(segmentSize.width, buttonSize.width),
+            height: max(segmentSize.height, buttonSize.height)
+        )
+    }
+    
+    @objc private func onSegmentChanged(_ sender: UISegmentedControl) {
+        presenter.onSegmentChanged()
+    }
+    
+    @objc private func onMoreButtonTapped(_ sender: UIButton) {
+        presenter.onMoreButtonTap()
+    }
+}
+
+extension SegmentedPickerView: SegmentedPickerViewProtocol {
+    
+    func toggleMoreButton(_ title: String, selected: Bool) {
+        if selected {
+            moreButton.backgroundColor = .white
+            moreButton.setTitleColor(selectedSegmentTitleColor, for: .normal)
+            moreButton.layer.shadowOpacity = 0.5
+        } else {
+            moreButton.backgroundColor = self.backgroundColor
+            moreButton.setTitleColor(normalTitleColor, for: .normal)
+            moreButton.layer.shadowOpacity = 0
+        }
+        moreButton.setTitle(title, for: .normal)
+    }
+    
+    func changeSegment(
+        _ filters: [String],
+        buttonTitle: String
+    ) {
+        if segmentedControl.selectedSegmentIndex != -1 {
+            delegate?.onSelectionChanged(
+                filters[segmentedControl.selectedSegmentIndex]
+            )
+            toggleMoreButton(buttonTitle, selected: false)
+        }
+    }
+    
+    func setupMoreButton(
+        title: String,
+        image: UIImage?
+    ) {
+        moreButton.setTitle(title, for: .normal)
+        moreButton.setImage(image, for: .normal)
         moreButton.tintColor = selectedSegmentTitleColor
         moreButton.setTitleColor(normalTitleColor, for: .normal)
         moreButton.backgroundColor = Constants.darkSegmentGray
@@ -112,7 +198,7 @@ public class SegmentedPickerView: UIView {
         )
     }
     
-    private func setupSegmentedControl() {
+    func setupSegmentedControl() {
         segmentedControl.addTarget(
             self,
             action: #selector(onSegmentChanged(_:)),
@@ -127,15 +213,15 @@ public class SegmentedPickerView: UIView {
             [NSAttributedString.Key.foregroundColor:normalTitleColor],
             for: .normal
         )
+        segmentedControl.selectedSegmentIndex = 0
     }
     
-    private func setupMainGrid() {
-        guard let segmentedFilters else { return }
+    func setupMainGrid(_ isMoreButtonActive: Bool) {
         
-        if let _ = moreFilters {
+        if isMoreButtonActive {
             mainGrid = Grid.horizontal {
                 segmentedControl
-                    .Expanded(value: CGFloat(segmentedFilters.count))
+                    .Expanded(value: CGFloat(segmentedControl.numberOfSegments))
                 moreButton
                     .Expanded(value: 1,
                               margin: Constants.buttonEdgeInset)
@@ -147,7 +233,6 @@ public class SegmentedPickerView: UIView {
             }
         }
         
-        //since we initialized the mainGrid above, we can force unwrap
         self.addSubview(mainGrid)
         mainGrid.translatesAutoresizingMaskIntoConstraints = false
         NSLayoutConstraint.activate([
@@ -156,47 +241,6 @@ public class SegmentedPickerView: UIView {
             mainGrid.bottomAnchor.constraint(equalTo: self.bottomAnchor),
             mainGrid.trailingAnchor.constraint(equalTo: self.trailingAnchor)
         ])
-    }
-    
-    @objc private func onSegmentChanged(_ sender: UISegmentedControl) {
-        if let segmentedFilters, sender.selectedSegmentIndex != -1 {
-            delegate?.onSelectionChanged(
-                segmentedFilters[sender.selectedSegmentIndex]
-            )
-            toggleMoreButton(moreButtonTitle, selected: false)
-            pickerView.selectRow(0, inComponent: 0, animated: false)
-        }
-    }
-    
-    @objc private func onMoreButtonTapped(_ sender: UIButton) {
-        showPicker()
-    }
-    
-    private func toggleMoreButton(_ title: String, selected: Bool) {
-        if selected {
-            moreButton.backgroundColor = .white
-            moreButton.setTitleColor(selectedSegmentTitleColor, for: .normal)
-            moreButton.layer.shadowOpacity = 0.5
-        } else {
-            moreButton.backgroundColor = self.backgroundColor
-            moreButton.setTitleColor(normalTitleColor, for: .normal)
-            moreButton.layer.shadowOpacity = 0
-        }
-        moreButton.setTitle(title, for: .normal)
-    }
-    
-    private func showPicker() {
-        let pickerVC = ModalPickerController()
-        pickerVC.delegate = self
-        pickerVC.horizontalInset = 10
-        pickerVC.height = pickerHeight
-        pickerVC.modalPresentationStyle = .formSheet
-        pickerVC.titleLabel.text = pickerTitle
-        pickerVC.cancelButton.backgroundColor = popupCancelColor
-        if let moreFilters {
-            pickerVC.collection = moreFilters
-        }
-        self.window?.rootViewController?.present(pickerVC, animated: true)
     }
 }
 

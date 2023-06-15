@@ -7,8 +7,12 @@
 
 import Foundation
 
+enum HomeRoutes {
+    case detailPage
+}
+
 protocol HomeRouterProtocol: AnyObject {
-    
+    func navigate(_ route: HomeRoutes)
 }
 
 final class HomeRouter {
@@ -35,5 +39,11 @@ final class HomeRouter {
 }
 
 extension HomeRouter: HomeRouterProtocol {
-    
+    func navigate(_ route: HomeRoutes) {
+        switch route {
+        case .detailPage:
+            let main = viewController?.navigationController?.tabBarController as? MainViewController
+            main?.presenter.detailRequest()
+        }
+    }
 }

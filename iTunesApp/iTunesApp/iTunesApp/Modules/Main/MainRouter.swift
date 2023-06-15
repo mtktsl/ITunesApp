@@ -8,19 +8,32 @@
 import Foundation
 import UIKit
 
+enum MainRoutes {
+    case detailPage
+}
+
+protocol MainRouterProtocol {
+    func navigate(_ route: MainRoutes)
+}
+
 final class MainRouter {
+    
+    weak var viewController: MainViewController?
     
     static func createModule() -> UITabBarController {
         
         let view = MainViewController()
         let interactor = MainInteractor()
+        let router = MainRouter()
         
         let presenter = MainPresenter(
             view: view,
-            interactor: interactor
+            interactor: interactor,
+            router: router
         )
         view.presenter = presenter
         interactor.output = presenter
+        router.viewController = view
         
         let homeVC = HomeRouter.createModule()
         let favoritesVC = FavoritesRouter.createModule()
@@ -37,12 +50,16 @@ final class MainRouter {
             [homeNavigationController, favoritesNavigationController],
             animated: false
         )
-        
-        if let items = view.tabBar.items {
-            items[0].image = UIImage(systemName: "music.note.house")
-            items[1].image = UIImage(systemName: "heart")
-        }
-        
+        presenter.viewDidLoad()
         return view
+    }
+}
+
+extension MainRouter: MainRouterProtocol {
+    func navigate(_ route: MainRoutes) {
+        switch route {
+        case .detailPage:
+            break//TODO: go to detail page
+        }
     }
 }

@@ -33,24 +33,24 @@ public struct ITunesURLConfigModel {
         
         result += queryStarter
         
-        result += ITunesParametersModel.params[0]
+        result += ITunesParametersModel.params.term.rawValue + "="
         result += queryParameters.term.addingPercentEncoding(
             withAllowedCharacters: .alphanumerics
         ) ?? "-"
         
         result += querySeperator
         
-        result += ITunesParametersModel.params[1]
+        result += ITunesParametersModel.params.country.rawValue + "="
         result += queryParameters.country
         
         result += querySeperator
         
-        result += ITunesParametersModel.params[2]
+        result += ITunesParametersModel.params.entity.rawValue + "="
         result += queryParameters.entity.rawValue
         
         result += querySeperator
         
-        result += ITunesParametersModel.params[3]
+        result += ITunesParametersModel.params.attribute.rawValue + "="
         result += queryParameters.attribute.rawValue
         
         return result

@@ -96,12 +96,12 @@ public struct ITunesParametersModel {
     public let entity: ITunesEntityParameter
     public let attribute: ITunesAttributeParameter
     
-    static let params = [
-        "term=",
-        "country=",
-        "entity=",
-        "attribute="
-    ]
+    enum params: String {
+        case term
+        case country
+        case entity
+        case attribute
+    }
     
     public init(
         term: String,

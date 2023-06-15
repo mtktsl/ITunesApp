@@ -9,6 +9,7 @@ import Foundation
 import iTunesAPI
 
 enum ApplicationConstants {
+    //url config for itunes api
     static let urlConfig = ITunesURLConfigModel(
         baseURLString: "https://itunes.apple.com",
         routeString: "search",
@@ -16,6 +17,7 @@ enum ApplicationConstants {
         querySeperator: "&"
     )
     
+    //country code for the user to be used in itunes api searches
     static var countryCode: String {
         if #available(iOS 16, *) {
             return Locale.current.region?.identifier.lowercased() ?? "us"
@@ -23,4 +25,19 @@ enum ApplicationConstants {
             return Locale.current.regionCode?.lowercased() ?? "us"
         }
     }
+    
+    //Available itunes api search filters among the app
+    enum AvailableFilters: String, CaseIterable {
+        case all = "All"
+        case music = "Music"
+        case album = "Album"
+        case artist = "Artist"
+        case movie = "Movie"
+    }
+    
+    enum ImageAssets: String {
+        case loading
+    }
+    
+    static let searchCellHeight: CGFloat = 50
 }

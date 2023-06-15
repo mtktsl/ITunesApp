@@ -10,6 +10,7 @@ import NetworkStatusObserver
 
 protocol MainInteractorProtocol: AnyObject {
     func checkInternetConnection()
+    func getTabImageNames() -> [String]
 }
 
 protocol MainInteractorOutputProtocol: AnyObject {
@@ -24,6 +25,10 @@ final class MainInteractor {
 }
 
 extension MainInteractor: MainInteractorProtocol {
+    func getTabImageNames() -> [String] {
+        return MainEntity.tabImageNames
+    }
+    
     func checkInternetConnection() {
         output.onConnectionChanged(NetworkStatusObserver.shared.isConnected)
     }

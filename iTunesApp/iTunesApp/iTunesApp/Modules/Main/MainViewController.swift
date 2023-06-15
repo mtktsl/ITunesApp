@@ -9,6 +9,9 @@ import Foundation
 import UIKit
 
 protocol MainViewControllerProtocol: AnyObject {
+    
+    func setupTabBar(imageNames: [String])
+    
     func showError(
         title: String,
         message: String,
@@ -20,15 +23,18 @@ protocol MainViewControllerProtocol: AnyObject {
 }
 
 final class MainViewController: UITabBarController {
-    
     var presenter: MainPresenterProtocol!
-    
-    override func viewDidLoad() {
-        super.viewDidLoad()
-    }
 }
 
 extension MainViewController: MainViewControllerProtocol {
+    func setupTabBar(imageNames: [String]) {
+        
+        guard let items = self.tabBar.items else { return }
+        for i in 0 ..< items.count {
+            items[i].image = UIImage(systemName: imageNames[i])
+        }
+    }
+    
     func showError(
         title: String,
         message: String,

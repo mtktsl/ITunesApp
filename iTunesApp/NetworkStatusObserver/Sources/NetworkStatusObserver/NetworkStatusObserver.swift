@@ -31,6 +31,7 @@ public final class NetworkStatusObserver {
         networkMonitor.start(queue: networkQueue)
         networkMonitor.pathUpdateHandler = { [weak self] path in
             guard let self else { return }
+            
             switch path.status {
             case .satisfied:
                 isConnected = !isLoadedOnce
