@@ -114,6 +114,7 @@ extension HomePresenter: HomePresenterProtocol {
         }
         lastSearch = searchText
         lastFilter = filter
+        view.showLoading()
         
         guard !searchText.isEmpty else {
             view.hideLoading()

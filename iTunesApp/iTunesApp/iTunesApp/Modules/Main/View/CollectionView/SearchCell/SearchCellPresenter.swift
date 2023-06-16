@@ -9,7 +9,7 @@ import Foundation
 
 extension SearchCellPresenter {
     enum Constants {
-        static let playButtonSystemImage = "play.fill"
+        static let playButtonSystemImage = "play.circle"
     }
 }
 

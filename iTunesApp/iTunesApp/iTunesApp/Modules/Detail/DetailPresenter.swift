@@ -10,7 +10,7 @@ import Foundation
 extension DetailPresenter {
     enum Constants {
         static let pauseButtonImageName = "pause.fill"
-        static let playButtonImageName = "play.fill"
+        static let playButtonImageName = "play.circle"
         static let heartEmptyImageName = "heart"
         static let heartFillImageName = "heart.fill"
     }

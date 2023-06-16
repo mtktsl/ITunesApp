@@ -7,6 +7,12 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F3596862A3CF2D1005F884A /* iTunesAppTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3596852A3CF2D1005F884A /* iTunesAppTests.swift */; };
+		6F35968E2A3CF308005F884A /* MockSplashInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F35968D2A3CF308005F884A /* MockSplashInteractor.swift */; };
+		6F3596912A3CF3BD005F884A /* MockSplashViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3596902A3CF3BD005F884A /* MockSplashViewController.swift */; };
+		6F3596982A3CF48C005F884A /* MockSplashPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3596972A3CF48C005F884A /* MockSplashPresenter.swift */; };
+		6F35969A2A3CF556005F884A /* MockSplashRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3596992A3CF556005F884A /* MockSplashRouter.swift */; };
+		6F35969C2A3CFAA1005F884A /* SplashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F35969B2A3CFAA1005F884A /* SplashTests.swift */; };
 		6F75DD002A3CCFF1003CD00E /* MediaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */; };
 		6FB536012A352DBC00FAB6C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */; };
 		6FB536032A352DBC00FAB6C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536022A352DBC00FAB6C3 /* SceneDelegate.swift */; };
@@ -57,7 +63,24 @@
 		6FBABA5D2A3CA205003EE5F3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
+/* Begin PBXContainerItemProxy section */
+		6F3596872A3CF2D1005F884A /* PBXContainerItemProxy */ = {
+			isa = PBXContainerItemProxy;
+			containerPortal = 6FB535F52A352DBC00FAB6C3 /* Project object */;
+			proxyType = 1;
+			remoteGlobalIDString = 6FB535FC2A352DBC00FAB6C3;
+			remoteInfo = iTunesApp;
+		};
+/* End PBXContainerItemProxy section */
+
 /* Begin PBXFileReference section */
+		6F3596832A3CF2D1005F884A /* iTunesAppTests.xctest */ = {isa = PBXFileReference; explicitFileType = wrapper.cfbundle; includeInIndex = 0; path = iTunesAppTests.xctest; sourceTree = BUILT_PRODUCTS_DIR; };
+		6F3596852A3CF2D1005F884A /* iTunesAppTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = iTunesAppTests.swift; sourceTree = "<group>"; };
+		6F35968D2A3CF308005F884A /* MockSplashInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSplashInteractor.swift; sourceTree = "<group>"; };
+		6F3596902A3CF3BD005F884A /* MockSplashViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSplashViewController.swift; sourceTree = "<group>"; };
+		6F3596972A3CF48C005F884A /* MockSplashPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSplashPresenter.swift; sourceTree = "<group>"; };
+		6F3596992A3CF556005F884A /* MockSplashRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSplashRouter.swift; sourceTree = "<group>"; };
+		6F35969B2A3CFAA1005F884A /* SplashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashTests.swift; sourceTree = "<group>"; };
 		6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayer.swift; sourceTree = "<group>"; };
 		6FB535FD2A352DBC00FAB6C3 /* iTunesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
@@ -112,6 +135,13 @@
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
+		6F3596802A3CF2D1005F884A /* Frameworks */ = {
+			isa = PBXFrameworksBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6FB535FA2A352DBC00FAB6C3 /* Frameworks */ = {
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
@@ -128,11 +158,41 @@
 /* End PBXFrameworksBuildPhase section */
 
 /* Begin PBXGroup section */
+		6F3596842A3CF2D1005F884A /* iTunesAppTests */ = {
+			isa = PBXGroup;
+			children = (
+				6F35968C2A3CF2FB005F884A /* Mock */,
+				6F3596852A3CF2D1005F884A /* iTunesAppTests.swift */,
+			);
+			path = iTunesAppTests;
+			sourceTree = "<group>";
+		};
+		6F35968C2A3CF2FB005F884A /* Mock */ = {
+			isa = PBXGroup;
+			children = (
+				6F35968F2A3CF399005F884A /* Splash */,
+			);
+			path = Mock;
+			sourceTree = "<group>";
+		};
+		6F35968F2A3CF399005F884A /* Splash */ = {
+			isa = PBXGroup;
+			children = (
+				6F3596902A3CF3BD005F884A /* MockSplashViewController.swift */,
+				6F35968D2A3CF308005F884A /* MockSplashInteractor.swift */,
+				6F3596972A3CF48C005F884A /* MockSplashPresenter.swift */,
+				6F3596992A3CF556005F884A /* MockSplashRouter.swift */,
+				6F35969B2A3CFAA1005F884A /* SplashTests.swift */,
+			);
+			path = Splash;
+			sourceTree = "<group>";
+		};
 		6FB535F42A352DBC00FAB6C3 = {
 			isa = PBXGroup;
 			children = (
 				6FB536182A352EB100FAB6C3 /* Packages */,
 				6FB535FF2A352DBC00FAB6C3 /* iTunesApp */,
+				6F3596842A3CF2D1005F884A /* iTunesAppTests */,
 				6FB535FE2A352DBC00FAB6C3 /* Products */,
 				6FB5361E2A352F2000FAB6C3 /* Frameworks */,
 			);
@@ -142,6 +202,7 @@
 			isa = PBXGroup;
 			children = (
 				6FB535FD2A352DBC00FAB6C3 /* iTunesApp.app */,
+				6F3596832A3CF2D1005F884A /* iTunesAppTests.xctest */,
 			);
 			name = Products;
 			sourceTree = "<group>";
@@ -340,6 +401,24 @@
 /* End PBXGroup section */
 
 /* Begin PBXNativeTarget section */
+		6F3596822A3CF2D1005F884A /* iTunesAppTests */ = {
+			isa = PBXNativeTarget;
+			buildConfigurationList = 6F3596892A3CF2D1005F884A /* Build configuration list for PBXNativeTarget "iTunesAppTests" */;
+			buildPhases = (
+				6F35967F2A3CF2D1005F884A /* Sources */,
+				6F3596802A3CF2D1005F884A /* Frameworks */,
+				6F3596812A3CF2D1005F884A /* Resources */,
+			);
+			buildRules = (
+			);
+			dependencies = (
+				6F3596882A3CF2D1005F884A /* PBXTargetDependency */,
+			);
+			name = iTunesAppTests;
+			productName = iTunesAppTests;
+			productReference = 6F3596832A3CF2D1005F884A /* iTunesAppTests.xctest */;
+			productType = "com.apple.product-type.bundle.unit-test";
+		};
 		6FB535FC2A352DBC00FAB6C3 /* iTunesApp */ = {
 			isa = PBXNativeTarget;
 			buildConfigurationList = 6FB536112A352DBC00FAB6C3 /* Build configuration list for PBXNativeTarget "iTunesApp" */;
@@ -374,6 +453,10 @@
 				LastSwiftUpdateCheck = 1430;
 				LastUpgradeCheck = 1430;
 				TargetAttributes = {
+					6F3596822A3CF2D1005F884A = {
+						CreatedOnToolsVersion = 14.3;
+						TestTargetID = 6FB535FC2A352DBC00FAB6C3;
+					};
 					6FB535FC2A352DBC00FAB6C3 = {
 						CreatedOnToolsVersion = 14.3;
 					};
@@ -393,11 +476,19 @@
 			projectRoot = "";
 			targets = (
 				6FB535FC2A352DBC00FAB6C3 /* iTunesApp */,
+				6F3596822A3CF2D1005F884A /* iTunesAppTests */,
 			);
 		};
 /* End PBXProject section */
 
 /* Begin PBXResourcesBuildPhase section */
+		6F3596812A3CF2D1005F884A /* Resources */ = {
+			isa = PBXResourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6FB535FB2A352DBC00FAB6C3 /* Resources */ = {
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -411,6 +502,19 @@
 /* End PBXResourcesBuildPhase section */
 
 /* Begin PBXSourcesBuildPhase section */
+		6F35967F2A3CF2D1005F884A /* Sources */ = {
+			isa = PBXSourcesBuildPhase;
+			buildActionMask = 2147483647;
+			files = (
+				6F35969A2A3CF556005F884A /* MockSplashRouter.swift in Sources */,
+				6F3596862A3CF2D1005F884A /* iTunesAppTests.swift in Sources */,
+				6F3596982A3CF48C005F884A /* MockSplashPresenter.swift in Sources */,
+				6F35968E2A3CF308005F884A /* MockSplashInteractor.swift in Sources */,
+				6F35969C2A3CFAA1005F884A /* SplashTests.swift in Sources */,
+				6F3596912A3CF3BD005F884A /* MockSplashViewController.swift in Sources */,
+			);
+			runOnlyForDeploymentPostprocessing = 0;
+		};
 		6FB535F92A352DBC00FAB6C3 /* Sources */ = {
 			isa = PBXSourcesBuildPhase;
 			buildActionMask = 2147483647;
@@ -459,6 +563,14 @@
 		};
 /* End PBXSourcesBuildPhase section */
 
+/* Begin PBXTargetDependency section */
+		6F3596882A3CF2D1005F884A /* PBXTargetDependency */ = {
+			isa = PBXTargetDependency;
+			target = 6FB535FC2A352DBC00FAB6C3 /* iTunesApp */;
+			targetProxy = 6F3596872A3CF2D1005F884A /* PBXContainerItemProxy */;
+		};
+/* End PBXTargetDependency section */
+
 /* Begin PBXVariantGroup section */
 		6FB536062A352DBC00FAB6C3 /* Main.storyboard */ = {
 			isa = PBXVariantGroup;
@@ -479,6 +591,40 @@
 /* End PBXVariantGroup section */
 
 /* Begin XCBuildConfiguration section */
+		6F35968A2A3CF2D1005F884A /* Debug */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mtk.iTunesAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iTunesApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iTunesApp";
+			};
+			name = Debug;
+		};
+		6F35968B2A3CF2D1005F884A /* Release */ = {
+			isa = XCBuildConfiguration;
+			buildSettings = {
+				BUNDLE_LOADER = "$(TEST_HOST)";
+				CODE_SIGN_STYLE = Automatic;
+				CURRENT_PROJECT_VERSION = 1;
+				GENERATE_INFOPLIST_FILE = YES;
+				MARKETING_VERSION = 1.0;
+				PRODUCT_BUNDLE_IDENTIFIER = com.mtk.iTunesAppTests;
+				PRODUCT_NAME = "$(TARGET_NAME)";
+				SWIFT_EMIT_LOC_STRINGS = NO;
+				SWIFT_VERSION = 5.0;
+				TARGETED_DEVICE_FAMILY = "1,2";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/iTunesApp.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/iTunesApp";
+			};
+			name = Release;
+		};
 		6FB5360F2A352DBC00FAB6C3 /* Debug */ = {
 			isa = XCBuildConfiguration;
 			buildSettings = {
@@ -652,6 +798,15 @@
 /* End XCBuildConfiguration section */
 
 /* Begin XCConfigurationList section */
+		6F3596892A3CF2D1005F884A /* Build configuration list for PBXNativeTarget "iTunesAppTests" */ = {
+			isa = XCConfigurationList;
+			buildConfigurations = (
+				6F35968A2A3CF2D1005F884A /* Debug */,
+				6F35968B2A3CF2D1005F884A /* Release */,
+			);
+			defaultConfigurationIsVisible = 0;
+			defaultConfigurationName = Release;
+		};
 		6FB535F82A352DBC00FAB6C3 /* Build configuration list for PBXProject "iTunesApp" */ = {
 			isa = XCConfigurationList;
 			buildConfigurations = (

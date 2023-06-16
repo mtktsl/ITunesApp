@@ -13,7 +13,6 @@ enum SplashRoutes {
 }
 
 protocol SplashRouterProtocol {
-    static func createModule() -> SplashViewController
     func navigate(_ route: SplashRoutes)
     func exitApplication()
 }
