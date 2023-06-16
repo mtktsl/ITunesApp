@@ -16,7 +16,6 @@ extension HomeInteractor {
 }
 
 protocol HomeInteractorProtocol {
-    func testQuery()
     func createFilters() -> (
         visibleFilters: [String],
         hiddenFilters: [String]
@@ -26,10 +25,15 @@ protocol HomeInteractorProtocol {
         searchText: String,
         filter: String
     )
+    
+    func apiToEntity(_ apiModel: ITunesResultModel) -> SearchCellEntity
+    func reloadCoreData()
+    
+    func isFavorite(_ data: SearchCellEntity) -> Bool
 }
 
 protocol HomeInteractorOutputProtocol {
-    func onSearchResult(_ data: [ITunesResultModel])
+    func onSearchResult(_ data: [ITunesResultModel], forText: String, forFilter: String)
 }
 
 final class HomeInteractor {
@@ -40,13 +44,43 @@ final class HomeInteractor {
 }
 
 extension HomeInteractor: HomeInteractorProtocol {
+    func reloadCoreData() {
+        CoreDataManager.shared.reloadData()
+    }
+    
+    func apiToEntity(_ data: ITunesResultModel) -> SearchCellEntity {
+        var entity = SearchCellEntity(
+            artistId: data.artistId,
+            collectionId: data.collectionId,
+            trackId: data.trackId,
+            trackName: data.trackName,
+            artistName: data.artistName,
+            collectionName: data.collectionName,
+            primaryGenreName: data.primaryGenreName,
+            trackPrice: data.trackPrice,
+            collectionPrice: data.collectionPrice,
+            currency: data.currency,
+            imageURLString: data.artworkUrl100
+                            ?? data.artworkUrl60
+                            ?? data.artworkUrl30,
+            previewURLString: data.previewUrl,
+            isFavorite: false
+        )
+        entity.isFavorite = CoreDataManager.shared.exists(entity)
+        return entity
+    }
+    
+    func isFavorite(_ data: SearchCellEntity) -> Bool {
+        return CoreDataManager.shared.exists(data)
+    }
+    
     func performQuery(
         searchText: String,
         filter: String
     ) {
-        guard let filter = ITunesFilterConfig.mapping[filter]
+        guard let itunesFilter = ITunesFilterConfig.mapping[filter]
         else {
-            output.onSearchResult([])
+            output.onSearchResult([], forText: searchText, forFilter: filter)
             return
         }
         
@@ -54,17 +88,25 @@ extension HomeInteractor: HomeInteractorProtocol {
             .init(
                 term: searchText,
                 country: ApplicationConstants.countryCode,
-                entity: filter.entity,
-                attribute: filter.attribute
+                entity: itunesFilter.entity,
+                attribute: itunesFilter.attribute
             )
         ) { [weak self] result in
             guard let self else { return }
             
             switch result {
             case .success(let data):
-                output.onSearchResult(data.results ?? [])
+                output.onSearchResult(
+                    data.results ?? [],
+                    forText: searchText,
+                    forFilter: filter
+                )
             case .failure(_):
-                output.onSearchResult([])
+                output.onSearchResult(
+                    [],
+                    forText: searchText,
+                    forFilter: filter
+                )
             }
         }
     }
@@ -86,44 +128,5 @@ extension HomeInteractor: HomeInteractorProtocol {
             visibleFilters: visible,
             hiddenFilters: hidden
         )
-    }
-    
-
-    func testQuery() {
-        
-        let service = iTunesAPI(sourceURL: ApplicationConstants.urlConfig)
-        
-        let testURLString = ApplicationConstants
-            .urlConfig
-                .generateQueryURLString(
-                        .init(
-                            term: "beni çok sev",
-                            country: ApplicationConstants.countryCode,
-                            entity: .song,
-                            attribute: .songTerm
-                        )
-        )
-        
-        print(testURLString)
-        
-        service.performQuery(
-            .init(term: "tarkan",
-                  country: "tr",
-                  entity: .allTrack,
-                  attribute: .songTerm)
-        ) { [weak self] result in
-            guard let _ = self else { return }
-            switch result {
-            case .success(let data):
-                if let first = data.results?.first {
-                    //print(first)
-                    print(first.kind?.rawValue)
-                } else {
-                    print("nil")
-                }
-            case .failure(let error):
-                print(error.localizedDescription)
-            }
-        }
     }
 }

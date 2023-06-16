@@ -7,6 +7,7 @@
 	objects = {
 
 /* Begin PBXBuildFile section */
+		6F75DD002A3CCFF1003CD00E /* MediaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */; };
 		6FB536012A352DBC00FAB6C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */; };
 		6FB536032A352DBC00FAB6C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536022A352DBC00FAB6C3 /* SceneDelegate.swift */; };
 		6FB536052A352DBC00FAB6C3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536042A352DBC00FAB6C3 /* HomeViewController.swift */; };
@@ -44,9 +45,20 @@
 		6FBABA372A3A03CF003EE5F3 /* SearchCollectionFlowLayout.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA362A3A03CF003EE5F3 /* SearchCollectionFlowLayout.swift */; };
 		6FBABA392A3A043E003EE5F3 /* SearchCellEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA382A3A043E003EE5F3 /* SearchCellEntity.swift */; };
 		6FBABA3D2A3A51D5003EE5F3 /* UIEdgeInsets+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA3C2A3A51D5003EE5F3 /* UIEdgeInsets+Extension.swift */; };
+		6FBABA402A3B7739003EE5F3 /* UIColor+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA3F2A3B7739003EE5F3 /* UIColor+Extension.swift */; };
+		6FBABA422A3B7877003EE5F3 /* CGFloat+Extension.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA412A3B7877003EE5F3 /* CGFloat+Extension.swift */; };
+		6FBABA442A3B8CAD003EE5F3 /* DetailViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA432A3B8CAD003EE5F3 /* DetailViewController.swift */; };
+		6FBABA462A3B8D01003EE5F3 /* DetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */; };
+		6FBABA482A3B8D35003EE5F3 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */; };
+		6FBABA4A2A3B8DA1003EE5F3 /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */; };
+		6FBABA4C2A3B8DE6003EE5F3 /* DetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA4B2A3B8DE6003EE5F3 /* DetailEntity.swift */; };
+		6FBABA552A3C9D22003EE5F3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FBABA542A3C9D21003EE5F3 /* CoreData.framework */; };
+		6FBABA5A2A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA582A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld */; };
+		6FBABA5D2A3CA205003EE5F3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXFileReference section */
+		6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayer.swift; sourceTree = "<group>"; };
 		6FB535FD2A352DBC00FAB6C3 /* iTunesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FB536022A352DBC00FAB6C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -87,6 +99,16 @@
 		6FBABA362A3A03CF003EE5F3 /* SearchCollectionFlowLayout.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCollectionFlowLayout.swift; sourceTree = "<group>"; };
 		6FBABA382A3A043E003EE5F3 /* SearchCellEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SearchCellEntity.swift; sourceTree = "<group>"; };
 		6FBABA3C2A3A51D5003EE5F3 /* UIEdgeInsets+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIEdgeInsets+Extension.swift"; sourceTree = "<group>"; };
+		6FBABA3F2A3B7739003EE5F3 /* UIColor+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "UIColor+Extension.swift"; sourceTree = "<group>"; };
+		6FBABA412A3B7877003EE5F3 /* CGFloat+Extension.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = "CGFloat+Extension.swift"; sourceTree = "<group>"; };
+		6FBABA432A3B8CAD003EE5F3 /* DetailViewController.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailViewController.swift; sourceTree = "<group>"; };
+		6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInteractor.swift; sourceTree = "<group>"; };
+		6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
+		6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
+		6FBABA4B2A3B8DE6003EE5F3 /* DetailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEntity.swift; sourceTree = "<group>"; };
+		6FBABA542A3C9D21003EE5F3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
+		6FBABA592A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchEntityCoreDataModel.xcdatamodel; sourceTree = "<group>"; };
+		6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -95,6 +117,7 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FB536202A352F2000FAB6C3 /* GridLayout in Frameworks */,
+				6FBABA552A3C9D22003EE5F3 /* CoreData.framework in Frameworks */,
 				6FB536222A352F2300FAB6C3 /* LoadingShowerController in Frameworks */,
 				6FB536422A35F10600FAB6C3 /* NetworkStatusObserver in Frameworks */,
 				6FB5365B2A36404700FAB6C3 /* iTunesAPI in Frameworks */,
@@ -128,6 +151,7 @@
 			children = (
 				6FB536152A352E0C00FAB6C3 /* Application */,
 				6FB536552A362A5600FAB6C3 /* Extensions */,
+				6FBABA5B2A3CA1EC003EE5F3 /* Utility */,
 				6FB536142A352DFF00FAB6C3 /* Modules */,
 				6FB5360E2A352DBC00FAB6C3 /* Info.plist */,
 			);
@@ -140,6 +164,7 @@
 				6FB536172A352E4E00FAB6C3 /* Base */,
 				6FB536292A3532F200FAB6C3 /* Splash */,
 				6FB5364C2A35FBB000FAB6C3 /* Main */,
+				6FBABA3E2A3B6EFD003EE5F3 /* Detail */,
 				6FB536162A352E2900FAB6C3 /* Home */,
 				6FB536432A35F36900FAB6C3 /* Favorites */,
 			);
@@ -149,6 +174,7 @@
 		6FB536152A352E0C00FAB6C3 /* Application */ = {
 			isa = PBXGroup;
 			children = (
+				6FBABA572A3C9DC2003EE5F3 /* CoreData */,
 				6FB5363B2A35663A00FAB6C3 /* Constants */,
 				6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */,
 				6FB536022A352DBC00FAB6C3 /* SceneDelegate.swift */,
@@ -195,6 +221,7 @@
 		6FB5361E2A352F2000FAB6C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6FBABA542A3C9D21003EE5F3 /* CoreData.framework */,
 			);
 			name = Frameworks;
 			sourceTree = "<group>";
@@ -247,6 +274,8 @@
 			children = (
 				6FB536562A362A7900FAB6C3 /* NSLayoutConstraint+Extension.swift */,
 				6FBABA3C2A3A51D5003EE5F3 /* UIEdgeInsets+Extension.swift */,
+				6FBABA3F2A3B7739003EE5F3 /* UIColor+Extension.swift */,
+				6FBABA412A3B7877003EE5F3 /* CGFloat+Extension.swift */,
 			);
 			path = Extensions;
 			sourceTree = "<group>";
@@ -277,6 +306,35 @@
 				6FBABA382A3A043E003EE5F3 /* SearchCellEntity.swift */,
 			);
 			path = SearchCell;
+			sourceTree = "<group>";
+		};
+		6FBABA3E2A3B6EFD003EE5F3 /* Detail */ = {
+			isa = PBXGroup;
+			children = (
+				6FBABA432A3B8CAD003EE5F3 /* DetailViewController.swift */,
+				6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */,
+				6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */,
+				6FBABA4B2A3B8DE6003EE5F3 /* DetailEntity.swift */,
+				6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */,
+			);
+			path = Detail;
+			sourceTree = "<group>";
+		};
+		6FBABA572A3C9DC2003EE5F3 /* CoreData */ = {
+			isa = PBXGroup;
+			children = (
+				6FBABA582A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld */,
+			);
+			path = CoreData;
+			sourceTree = "<group>";
+		};
+		6FBABA5B2A3CA1EC003EE5F3 /* Utility */ = {
+			isa = PBXGroup;
+			children = (
+				6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */,
+				6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */,
+			);
+			path = Utility;
 			sourceTree = "<group>";
 		};
 /* End PBXGroup section */
@@ -358,15 +416,21 @@
 			buildActionMask = 2147483647;
 			files = (
 				6FBABA392A3A043E003EE5F3 /* SearchCellEntity.swift in Sources */,
+				6FBABA5A2A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld in Sources */,
 				6FB536492A35F3FD00FAB6C3 /* FavoritesRouter.swift in Sources */,
 				6FBABA312A3A019D003EE5F3 /* SearchCell.swift in Sources */,
 				6FB536452A35F38800FAB6C3 /* FavoritesViewController.swift in Sources */,
 				6FBABA3D2A3A51D5003EE5F3 /* UIEdgeInsets+Extension.swift in Sources */,
+				6FBABA4A2A3B8DA1003EE5F3 /* DetailRouter.swift in Sources */,
 				6FB5364E2A35FBD600FAB6C3 /* MainRouter.swift in Sources */,
 				6FB536052A352DBC00FAB6C3 /* HomeViewController.swift in Sources */,
+				6FBABA442A3B8CAD003EE5F3 /* DetailViewController.swift in Sources */,
 				6FB536472A35F3BC00FAB6C3 /* FavoritesInteractor.swift in Sources */,
 				6FB536502A36019B00FAB6C3 /* MainInteractor.swift in Sources */,
+				6F75DD002A3CCFF1003CD00E /* MediaPlayer.swift in Sources */,
+				6FBABA402A3B7739003EE5F3 /* UIColor+Extension.swift in Sources */,
 				6FB5362F2A35337700FAB6C3 /* SplashPresenter.swift in Sources */,
+				6FBABA462A3B8D01003EE5F3 /* DetailInteractor.swift in Sources */,
 				6FB5363D2A35665200FAB6C3 /* ApplicationConstants.swift in Sources */,
 				6FB536522A36022500FAB6C3 /* MainPresenter.swift in Sources */,
 				6FBABA2A2A39C468003EE5F3 /* HomeEntity.swift in Sources */,
@@ -374,9 +438,12 @@
 				6FB5361D2A352EE200FAB6C3 /* BaseViewController.swift in Sources */,
 				6FB536282A3530D800FAB6C3 /* HomeRouter.swift in Sources */,
 				6FB536012A352DBC00FAB6C3 /* AppDelegate.swift in Sources */,
+				6FBABA5D2A3CA205003EE5F3 /* CoreDataManager.swift in Sources */,
+				6FBABA422A3B7877003EE5F3 /* CGFloat+Extension.swift in Sources */,
 				6FBABA352A3A0276003EE5F3 /* SearchCellInteractor.swift in Sources */,
 				6FBABA2C2A39C5A7003EE5F3 /* MainEntity.swift in Sources */,
 				6FB5362D2A35335B00FAB6C3 /* SplashInteractor.swift in Sources */,
+				6FBABA4C2A3B8DE6003EE5F3 /* DetailEntity.swift in Sources */,
 				6FB536542A3603ED00FAB6C3 /* MainViewController.swift in Sources */,
 				6FB536262A3530BE00FAB6C3 /* HomeInteractor.swift in Sources */,
 				6FB536572A362A7900FAB6C3 /* NSLayoutConstraint+Extension.swift in Sources */,
@@ -386,6 +453,7 @@
 				6FB5364B2A35F42C00FAB6C3 /* FavoritesPresenter.swift in Sources */,
 				6FBABA332A3A01A7003EE5F3 /* SearchCellPresenter.swift in Sources */,
 				6FB5362B2A3532FC00FAB6C3 /* SplashViewController.swift in Sources */,
+				6FBABA482A3B8D35003EE5F3 /* DetailPresenter.swift in Sources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -626,6 +694,19 @@
 			productName = SegmentedPickerView;
 		};
 /* End XCSwiftPackageProductDependency section */
+
+/* Begin XCVersionGroup section */
+		6FBABA582A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld */ = {
+			isa = XCVersionGroup;
+			children = (
+				6FBABA592A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodel */,
+			);
+			currentVersion = 6FBABA592A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodel */;
+			path = SearchEntityCoreDataModel.xcdatamodeld;
+			sourceTree = "<group>";
+			versionGroupType = wrapper.xcdatamodel;
+		};
+/* End XCVersionGroup section */
 	};
 	rootObject = 6FB535F52A352DBC00FAB6C3 /* Project object */;
 }

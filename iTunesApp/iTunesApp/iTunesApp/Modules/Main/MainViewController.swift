@@ -33,6 +33,7 @@ extension MainViewController: MainViewControllerProtocol {
         for i in 0 ..< items.count {
             items[i].image = UIImage(systemName: imageNames[i])
         }
+        tabBar.backgroundColor = .tabBarColor
     }
     
     func showError(

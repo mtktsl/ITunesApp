@@ -51,15 +51,6 @@ public class SegmentedPickerView: UIView {
     
     public let moreButton: UIButton
     
-    //-----------
-    //private var moreButtonTitle: String
-    //public var moreButtonImage: UIImage?
-    
-    //public var pickerTitle: String
-    
-    //public let segmentedFilters: [String]?
-    //public let moreFilters: [String]?
-    
     public var selectedSegmentTintColor: UIColor = .white
     public var selectedSegmentTitleColor: UIColor = .black
     public var normalTitleColor: UIColor = .black
@@ -104,12 +95,6 @@ public class SegmentedPickerView: UIView {
     internal init(
         _ config: SegmentedPickerConfig
     ) {
-        //self.segmentedFilters = config.segmentedFilters
-        //self.moreFilters = config.moreFilters
-        //self.moreButtonTitle = config.moreButtonTitle
-        //self.pickerTitle = config.pickerTitle
-        //self.moreButtonImage = config.moreButtonImage
-        
         segmentedControl = UISegmentedControl(items: config.segmentedFilters)
         moreButton = UIButton(frame: .zero)
         

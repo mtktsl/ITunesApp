@@ -6,18 +6,23 @@
 //
 
 import Foundation
+import iTunesAPI // <- for the data model
 
 extension MainPresenter {
     fileprivate enum Constants {
         static let connectionErrorTitle = "Connection Error"
         static let connectionErrorMessage = "There is no internet connection."
         static let connectionErrorOkOption = "Retry"
+        
+        static let mediaPlayerErrorTitle = "Media Error"
+        static let mediaPlayerErrorMessage = "Media cannot be played."
+        static let mediaPlayerOkOption = "OK"
     }
 }
 
 protocol MainPresenterProtocol: AnyObject {
     func viewDidLoad()
-    func detailRequest()
+    func detailRequest(_ data: SearchCellEntity?)
 }
 
 final class MainPresenter {
@@ -35,12 +40,14 @@ final class MainPresenter {
         self.view = view
         self.interactor = interactor
         self.router = router
+        
+        MediaPlayer.shared.delegates.append(.init(self))
     }
 }
 
 extension MainPresenter: MainPresenterProtocol {
-    func detailRequest() {
-        router.navigate(.detailPage)
+    func detailRequest(_ data: SearchCellEntity?) {
+        router.navigate(.detailPage(data))
     }
     
     func viewDidLoad() {
@@ -68,6 +75,25 @@ extension MainPresenter: MainInteractorOutputProtocol {
                     interactor.checkInternetConnection()
                 },
                 
+                onCancel: nil)
+        }
+    }
+}
+
+extension MainPresenter: MediaPlayerDelegate {
+    func urlError() {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            isPopupOpen = true
+            view.showError(
+                title: Constants.mediaPlayerErrorTitle,
+                message: Constants.mediaPlayerErrorMessage,
+                okOption: Constants.mediaPlayerOkOption,
+                cancelOption: nil,
+                onOk: { [weak self] (_:AnyObject) -> Void in
+                    guard let self else { return }
+                    isPopupOpen = false
+                },
                 onCancel: nil)
         }
     }

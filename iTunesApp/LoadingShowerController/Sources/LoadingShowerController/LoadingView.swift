@@ -17,6 +17,24 @@ class LoadingView {
         configure()
     }
     
+    private func calculateFrame(_ view: UIView) -> CGRect {
+        
+        var totalX = view.frame.origin.x
+        var totalY = view.frame.origin.y
+        var parent = view.superview
+        while parent != nil {
+            totalX += parent?.frame.origin.x ?? 0
+            totalY += parent?.frame.origin.y ?? 0
+            parent = parent?.superview
+        }
+        return .init(
+            x: totalX,
+            y: totalY,
+            width: view.frame.size.width,
+            height: view.frame.size.height
+        )
+    }
+    
     func configure() {
         blurView = UIVisualEffectView(effect: UIBlurEffect(style: .dark))
         blurView.translatesAutoresizingMaskIntoConstraints = false
@@ -44,6 +62,20 @@ class LoadingView {
         activityIndicator.center = CGPoint(
             x: frame.size.width / 2,
             y: frame.size.height / 2
+        )
+        mainWindow.addSubview(blurView)
+        blurView.translatesAutoresizingMaskIntoConstraints = false
+        activityIndicator.startAnimating()
+    }
+    
+    func startLoading(on view: UIView) {
+        guard let mainWindow = UIApplication.shared.windows.first else { return }
+        let calculatedFrame = calculateFrame(view)
+        blurView.frame = calculatedFrame
+        blurView.layer.cornerRadius = view.layer.cornerRadius
+        activityIndicator.center = CGPoint(
+            x: calculatedFrame.size.width / 2,
+            y: calculatedFrame.size.height / 2
         )
         mainWindow.addSubview(blurView)
         blurView.translatesAutoresizingMaskIntoConstraints = false

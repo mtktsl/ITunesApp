@@ -37,7 +37,6 @@ enum ApplicationConstants {
     
     enum ImageAssets: String {
         case loading
+        case error = "exclamationmark.triangle"
     }
-    
-    static let searchCellHeight: CGFloat = 50
 }

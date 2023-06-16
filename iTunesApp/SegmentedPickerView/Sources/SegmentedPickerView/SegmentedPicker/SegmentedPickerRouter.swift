@@ -43,7 +43,7 @@ extension SegmentedPickerRouter: SegmentedPickerRouterProtocol {
         _ filters: [String],
         pickerTitle: String
     ) {
-        let pickerVC = ModalPickerController.build(filters)//ModalPickerController()
+        let pickerVC = ModalPickerRouter.createModule(filters)//ModalPickerController()
         pickerVC.delegate = controllerView
         pickerVC.horizontalInset = 10
         pickerVC.height = controllerView?.pickerHeight ?? 0
@@ -54,6 +54,8 @@ extension SegmentedPickerRouter: SegmentedPickerRouterProtocol {
         controllerView?
             .window?
             .rootViewController?
-            .present(pickerVC, animated: true)
+            .present(pickerVC, animated: true) {
+                
+            }
     }
 }

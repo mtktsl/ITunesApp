@@ -18,24 +18,37 @@ internal protocol ModalPickerPresenterProtocol {
     func onSearch(_ searchText: String)
     func getFilter(at index: Int) -> String?
     func onCancelTap()
+    func onDisappear()
 }
 
 internal final class ModalPickerPresenter {
     unowned var view: ModalPickerControllerProtocol!
+    let router: ModalPickerRouterProtocol!
     
     var collection = [String]()
     var filteredCollection = [String]()
+    var selectedFilter: String?
     
     var isFiltering: Bool = false
     
-    internal init(view: ModalPickerControllerProtocol!) {
+    internal init(
+        view: ModalPickerControllerProtocol,
+        router: ModalPickerRouterProtocol
+    ) {
         self.view = view
+        self.router = router
     }
 }
 
 extension ModalPickerPresenter: ModalPickerPresenterProtocol {
+    func onDisappear() {
+        if let selectedFilter {
+            view.sendToDelegate(selectedFilter)
+        }
+    }
+    
     func onCancelTap() {
-        view.dismiss()
+        router.navigate(.close)
     }
     
     func getFilter(at index: Int) -> String? {
@@ -70,9 +83,8 @@ extension ModalPickerPresenter: ModalPickerPresenterProtocol {
     }
     
     func onItemSelected(at index: Int) {
-        let selectedFilter = getFilter(at: index)
-        view.sendToDelegate(selectedFilter ?? "")
-        view.dismiss()
+        selectedFilter = getFilter(at: index)
+        router.navigate(.close)
     }
     
 }

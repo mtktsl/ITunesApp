@@ -23,4 +23,20 @@ extension UIEdgeInsets {
                   bottom: bottom,
                   right: right)
     }
+    
+    static let searchCellImageMargin = UIEdgeInsets(
+        top: 10,
+        left: 10,
+        bottom: 10,
+        right: 10
+    )
+    
+    static let searchCellTextMargin = UIEdgeInsets(
+        top: 10,
+        left: 0,
+        bottom: 10,
+        right: 0
+    )
+    
+    static let detailImageMargin = UIEdgeInsets(10)
 }

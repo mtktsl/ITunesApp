@@ -31,14 +31,15 @@ protocol HomeViewControllerProtocol: AnyObject {
     )
     
     func setupSearchBar()
-    func setupCollectionView()
+    func setupCollectionView(_ layout: UICollectionViewFlowLayout)
     func setupMainGrid()
     //-------------------
     
     func reloadData()
-    func startSearchUpdates()
+    func startSearchUpdates(_ interval: Double)
     func showLoading()
     func hideLoading()
+    func endEditting()
 }
 
 class HomeViewController: BaseViewController {
@@ -68,10 +69,13 @@ class HomeViewController: BaseViewController {
 }
 
 extension HomeViewController: HomeViewControllerProtocol {
+    func endEditting() {
+        self.view.endEditing(true)
+    }
     
-    func startSearchUpdates() {
+    func startSearchUpdates(_ interval: Double) {
         self.timer = Timer.scheduledTimer(
-            withTimeInterval: 1.5,
+            withTimeInterval: interval,
             repeats: true,
             block: { [weak self] _ in
                 guard let self else { return }
@@ -100,7 +104,7 @@ extension HomeViewController: HomeViewControllerProtocol {
     func setupSearchBar() {
         searchBar = UISearchBar()
         searchBar.delegate = self
-        //searchBar.placeholder = presenter.getPlaceHolder()
+        searchBar.placeholder = "Search"
     }
     
     func setupFilterView(
@@ -121,11 +125,7 @@ extension HomeViewController: HomeViewControllerProtocol {
         segmentedPickerView.delegate = self
     }
     
-    func setupCollectionView() {
-        let layout = SearchCollectionFlowLayout(
-            maxNumColumns: 1,
-            cellHeight: 80
-        )
+    func setupCollectionView(_ layout: UICollectionViewFlowLayout) {
         collectionView = UICollectionView(
             frame: .zero,
             collectionViewLayout: layout
@@ -140,21 +140,11 @@ extension HomeViewController: HomeViewControllerProtocol {
     
     func setupMainGrid() {
         
-        let imageView = UIImageView(image: UIImage(systemName: "star"))
-        imageView.contentMode = .scaleAspectFit
-        
-        let filterGrid = Grid.horizontal {
-            imageView
-                .Auto()
-            segmentedPickerView
-                .Expanded()
-        }
-        
         mainGrid = Grid.vertical {
             searchBar
                 .Auto()
-            filterGrid
-                .Constant(value: 35)
+            segmentedPickerView
+                .Auto(margin: .init(0,0, 10))
             collectionView
                 .Expanded()
         }
@@ -182,26 +172,35 @@ extension HomeViewController: HomeViewControllerProtocol {
     }
     
     func showLoading() {
-        let frame = CGRect(
-            x: CGFloat(mainGrid.frame.origin.x + collectionView.frame.origin.x),
-            y: CGFloat(mainGrid.frame.origin.y + collectionView.frame.origin.y),
-            width: collectionView.bounds.size.width,
-            height: collectionView.bounds.size.height
-        )
-        
-        super.showLoading(frame)
+        super.showLoading(on: collectionView)
     }
 }
 
 extension HomeViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        
+        presenter.searchDidChange(searchText)
+    }
+    
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        presenter.onReturnTap()
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter.onReturnTap()
     }
 }
 
 extension HomeViewController: SegmentedPickerViewDelegate {
     func onSelectionChanged(_ newSelection: String) {
         selectedFilter = newSelection
+        presenter.filterDidChange(newSelection)
     }
 }
 
@@ -225,22 +224,26 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
         else {
             fatalError("Failed to cast search cell in HomeViewController.")
         }
-        
-        let data = presenter.getSearchResult(at: indexPath.row)
-        
+
         cell.presenter = SearchCellPresenter(
             view: cell,
             interactor: SearchCellInteractor(),
-            data: .init(
-                trackName: data?.trackName,
-                artistName: data?.artistName,
-                collectionName: data?.collectionName,
-                imageURLString: data?.artworkUrl100
-                                ?? data?.artworkUrl60
-                                ?? data?.artworkUrl30,
-                previewURLString: data?.previewUrl)
+            data: presenter.getSearchResult(at: indexPath.row)
         )
-        
+        cell.delegate = self
         return cell
+    }
+    
+    func collectionView(
+        _ collectionView: UICollectionView,
+        didSelectItemAt indexPath: IndexPath
+    ) {
+        presenter.didSelectItem(at: indexPath.row)
+    }
+}
+
+extension HomeViewController: SearchCellDelegate {
+    func onPlayButtonTap(_ urlString: String) {
+        presenter.onPlayTap(urlString)
     }
 }

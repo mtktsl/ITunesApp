@@ -13,7 +13,6 @@ internal protocol ModalPickerControllerProtocol: AnyObject {
     func reloadData()
     func setupView()
     func layoutViews()
-    func dismiss()
     func sendToDelegate(_ filter: String)
 }
 
@@ -21,14 +20,12 @@ internal protocol ModalPickerControllerDelegate: AnyObject {
     func onFilterSelected(_ filter: String)
 }
 
-internal class ModalPickerController: UIViewController {
+internal final class ModalPickerController: UIViewController {
     
     var presenter: ModalPickerPresenter!
     
     weak var delegate: ModalPickerControllerDelegate?
-    
-    //var collection = [String]()
-    //private var filteredCollection = [String]()
+    var selectedIndex: Int?
     
     var height: CGFloat = 0
     var horizontalInset: CGFloat = 0
@@ -81,14 +78,6 @@ internal class ModalPickerController: UIViewController {
             .Expanded()
     }
     
-    static func build(_ collection: [String]) -> ModalPickerController {
-        let view = ModalPickerController()
-        let presenter = ModalPickerPresenter(view: view)
-        presenter.collection = collection
-        view.presenter = presenter
-        return view
-    }
-    
     override func viewDidLayoutSubviews() {
         presenter.viewDidLoad()
         presenter.viewDidLayout()
@@ -96,6 +85,10 @@ internal class ModalPickerController: UIViewController {
     
     @objc private func cancelTap(_ sender: UIButton) {
         presenter.onCancelTap()
+    }
+    override func viewDidDisappear(_ animated: Bool) {
+        super.viewDidDisappear(animated)
+        presenter.onDisappear()
     }
 }
 
@@ -112,10 +105,6 @@ extension ModalPickerController: ModalPickerControllerProtocol {
     
     func sendToDelegate(_ filter: String) {
         delegate?.onFilterSelected(filter)
-    }
-    
-    func dismiss() {
-        dismiss(animated: true)
     }
     
     func reloadData() {

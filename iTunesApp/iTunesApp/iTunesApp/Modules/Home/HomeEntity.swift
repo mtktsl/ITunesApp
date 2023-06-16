@@ -43,7 +43,7 @@ enum ITunesFilterConfig {
         
         ApplicationConstants
             .AvailableFilters.movie.rawValue: .init(
-                entity: .allTrack,
+                entity: .movie,
                 attribute: .movieTerm
         )
     ]

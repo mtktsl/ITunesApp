@@ -9,14 +9,15 @@ import Foundation
 
 extension SearchCellPresenter {
     enum Constants {
-        static let defaultImageName = "loading"
-        static let errorImageName = "exclamationmark.triangle"
+        static let playButtonSystemImage = "play.fill"
     }
 }
 
 protocol SearchCellPresenterProtocol: AnyObject {
     func cellDidInit()
     func cellDidSetup()
+    func cellPrepare()
+    func didTapPlay()
 }
 
 final class SearchCellPresenter {
@@ -37,17 +38,36 @@ final class SearchCellPresenter {
 }
 
 extension SearchCellPresenter: SearchCellPresenterProtocol {
+    func didTapPlay() {
+        view.notifyDelegate(data.previewURLString)
+    }
+    
+    func cellPrepare() {
+        view.resetViews()
+        view.setupImage(
+            imageName: ApplicationConstants
+                .ImageAssets
+                    .loading.rawValue
+        )
+    }
+    
     func cellDidSetup() {
         interactor.fetchImage(data.imageURLString ?? "")
     }
     
     func cellDidInit() {
+        view.setupView()
         view.setupCell(
             title: data.trackName,
             subtitle: data.artistName,
             body: data.collectionName
         )
-        view.setupImage(imageName: Constants.defaultImageName)
+        view.setupImage(
+            imageName: ApplicationConstants
+                .ImageAssets
+                    .loading.rawValue
+        )
+        view.setupButtonImage(systemName: Constants.playButtonSystemImage)
     }
 }
 
@@ -56,7 +76,11 @@ extension SearchCellPresenter: SearchCellInteractorOutputProtocol {
         if let data {
             view.setupImage(data: data)
         } else {
-            view.setupImage(systemName: Constants.errorImageName)
+            view.setupImage(
+                systemName: ApplicationConstants
+                    .ImageAssets
+                        .error.rawValue
+            )
         }
     }
 }

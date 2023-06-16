@@ -26,6 +26,11 @@ public enum ITunesResultKind: String, CaseIterable, Decodable {
 
 public struct ITunesResultModel: Decodable {
     public let kind: ITunesResultKind?
+    
+    public let artistId: Int?
+    public let collectionId: Int?
+    public let trackId: Int?
+    
     public let artistName: String?
     public let collectionName: String?
     public let trackName: String?
@@ -48,6 +53,9 @@ public struct ITunesResultModel: Decodable {
     
     enum CodingKeys: CodingKey {
         case kind
+        case artistId
+        case collectionId
+        case trackId
         case artistName
         case collectionName
         case trackName
@@ -80,6 +88,9 @@ public struct ITunesResultModel: Decodable {
             self.kind = .unknown
         }
         
+        self.artistId = try container.decodeIfPresent(Int.self, forKey: .artistId)
+        self.collectionId = try container.decodeIfPresent(Int.self, forKey: .collectionId)
+        self.trackId = try container.decodeIfPresent(Int.self, forKey: .trackId)
         self.artistName = try container.decodeIfPresent(String.self, forKey: .artistName)
         self.collectionName = try container.decodeIfPresent(String.self, forKey: .collectionName)
         self.trackName = try container.decodeIfPresent(String.self, forKey: .trackName)

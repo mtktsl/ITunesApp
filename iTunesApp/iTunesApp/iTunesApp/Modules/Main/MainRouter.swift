@@ -9,7 +9,7 @@ import Foundation
 import UIKit
 
 enum MainRoutes {
-    case detailPage
+    case detailPage(_ data: SearchCellEntity?)
 }
 
 protocol MainRouterProtocol {
@@ -36,7 +36,9 @@ final class MainRouter {
         router.viewController = view
         
         let homeVC = HomeRouter.createModule()
-        let favoritesVC = FavoritesRouter.createModule()
+        let favoritesVC = FavoritesRouter.createModule(
+            UIApplication.shared.delegate as? AppDelegate
+        )
         
         let homeNavigationController = UINavigationController(
             rootViewController: homeVC
@@ -51,15 +53,23 @@ final class MainRouter {
             animated: false
         )
         presenter.viewDidLoad()
+        
         return view
+    }
+    
+    func navigateToDetail(_ data: SearchCellEntity?) {
+        let detailVC = DetailRouter.createModule(data)
+        viewController?
+            .navigationController?
+            .pushViewController(detailVC, animated: true)
     }
 }
 
 extension MainRouter: MainRouterProtocol {
     func navigate(_ route: MainRoutes) {
         switch route {
-        case .detailPage:
-            break//TODO: go to detail page
+        case .detailPage(let data):
+            navigateToDetail(data)
         }
     }
 }

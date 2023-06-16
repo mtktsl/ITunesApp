@@ -15,13 +15,17 @@ protocol SearchCellProtocol: AnyObject {
         body: String?
     )
     
+    func setupView()
     func setupImage(systemName: String)
     func setupImage(imageName: String)
     func setupImage(data: Data)
+    func setupButtonImage(systemName: String)
+    func resetViews()
+    func notifyDelegate(_ urlString: String?)
 }
 
 protocol SearchCellDelegate: AnyObject {
-    func onPlayButtonTap()
+    func onPlayButtonTap(_ urlString: String)
 }
 
 class SearchCell: UICollectionViewCell {
@@ -38,16 +42,21 @@ class SearchCell: UICollectionViewCell {
     
     let titleLabel: UILabel = {
         let titleLabel = UILabel()
+        titleLabel.font = .boldSystemFont(ofSize: 16)
         return titleLabel
     }()
     
     let subtitleLabel: UILabel = {
         let subtitleLabel = UILabel()
+        subtitleLabel.textColor = .gray
+        subtitleLabel.font = .systemFont(ofSize: 14, weight: .medium)
         return subtitleLabel
     }()
     
     let bodyLabel: UILabel = {
         let bodyLabel = UILabel()
+        bodyLabel.font = .systemFont(ofSize: 14, weight: .light)
+        bodyLabel.textColor = .gray
         return bodyLabel
     }()
     
@@ -57,35 +66,92 @@ class SearchCell: UICollectionViewCell {
         return imageView
     }()
     
+    lazy var playButton: UIImageView = {
+        let playButton = UIImageView()
+        playButton.contentMode = .scaleAspectFit
+        playButton.tintColor = .black
+        playButton.isUserInteractionEnabled = true
+        playButton.addGestureRecognizer(
+            UITapGestureRecognizer(
+                target: self,
+                action: #selector(onPlayTap(_:))
+            )
+        )
+        return playButton
+    }()
+    
     lazy var mainGrid = Grid.horizontal {
         imageView
-            .Constant(value: 50)
+            .Constant(
+                value: .searchCellHomeHeight,
+                margin: .searchCellImageMargin
+            )
         
         Grid.vertical {
             titleLabel
                 .Auto()
             subtitleLabel
-                .Auto()
+                .Expanded(verticalAlignment: .autoBottom)
             bodyLabel
-                .Auto()
+                .Expanded(verticalAlignment: .autoTop)
             
-        }.Expanded()
-    }
-    
-    override init(frame: CGRect) {
-        super.init(frame: frame)
+        }.Expanded(margin: .searchCellTextMargin)
         
-        mainGrid.translatesAutoresizingMaskIntoConstraints = false
-        contentView.addSubview(mainGrid)
-        NSLayoutConstraint.expand(mainGrid, to: contentView)
+        playButton
+            .Constant(value: 50, margin: .init(0, 0, 0, 10))
     }
     
-    required init?(coder: NSCoder) {
-        fatalError("init(coder:) has not been implemented")
+    override func prepareForReuse() {
+        presenter.cellPrepare()
+    }
+    
+    func setImageCornerRadius() {
+        imageView.layer.cornerRadius = imageView.bounds.size.height / 2
+    }
+    
+    @objc func onPlayTap(_ recognizer: UITapGestureRecognizer) {
+        presenter.didTapPlay()
     }
 }
 
 extension SearchCell: SearchCellProtocol {
+    func notifyDelegate(_ urlString: String?) {
+        delegate?.onPlayButtonTap(urlString ?? "")
+    }
+    
+    func setupButtonImage(systemName: String) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            playButton.image = UIImage(systemName: systemName)
+            mainGrid.setNeedsLayout()
+        }
+    }
+    
+    func resetViews() {
+        titleLabel.text = ""
+        subtitleLabel.text = ""
+        bodyLabel.text = ""
+    }
+    
+    func setupView() {
+        mainGrid.translatesAutoresizingMaskIntoConstraints = false
+        contentView.addSubview(mainGrid)
+        NSLayoutConstraint.expand(mainGrid, to: contentView)
+        
+        contentView.layer.cornerRadius = .searchCellRadius
+        contentView.clipsToBounds = true
+        contentView.layer.borderWidth = 1
+        contentView.layer.borderColor = UIColor.lightGray.cgColor
+        
+        imageView.clipsToBounds = true
+        imageView.layer.cornerRadius = (
+            .searchCellHomeHeight
+            - UIEdgeInsets.searchCellImageMargin.top
+            - UIEdgeInsets.searchCellImageMargin.bottom
+        ) / 2
+        imageView.layer.borderWidth = 2
+        imageView.layer.borderColor = UIColor.lightGray.cgColor
+    }
     
     func setupCell(
         title: String?,
@@ -94,7 +160,9 @@ extension SearchCell: SearchCellProtocol {
     ) {
         titleLabel.text = title
         subtitleLabel.text = subtitle
-        bodyLabel.text = body
+        if let body {
+            bodyLabel.text = "Collection: " + body
+        }
         presenter.cellDidSetup()
     }
     
@@ -102,6 +170,8 @@ extension SearchCell: SearchCellProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             imageView.image = UIImage(data: data)
+            mainGrid.setNeedsLayout()
+            setImageCornerRadius()
         }
     }
     
@@ -109,6 +179,8 @@ extension SearchCell: SearchCellProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             imageView.image = UIImage(systemName: systemName)
+            mainGrid.setNeedsLayout()
+            setImageCornerRadius()
         }
     }
     
@@ -116,6 +188,8 @@ extension SearchCell: SearchCellProtocol {
         DispatchQueue.main.async { [weak self] in
             guard let self else { return }
             imageView.image = UIImage(named: imageName)
+            mainGrid.setNeedsLayout()
+            setImageCornerRadius()
         }
     }
 }

@@ -39,7 +39,10 @@ final class SearchCollectionFlowLayout: UICollectionViewFlowLayout {
             cellHeight = collectionView.bounds.size.height * 0.18
         }
         
-        let availableWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).width
+        let calculatedWidth = collectionView.bounds.inset(by: collectionView.layoutMargins).width - sectionInset.left - sectionInset.right
+        
+        let availableWidth = calculatedWidth < 0 ? 1 : calculatedWidth
+
         let cellWidth = (availableWidth / CGFloat(maxNumColumns)).rounded(.down)
         
         self.itemSize = CGSize(width: cellWidth,
