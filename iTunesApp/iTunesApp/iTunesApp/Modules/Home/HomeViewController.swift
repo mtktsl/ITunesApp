@@ -31,11 +31,16 @@ protocol HomeViewControllerProtocol: AnyObject {
     )
     
     func setupSearchBar()
+    func setupCollectionBackgroundView(
+        warningMessage: String,
+        imageSystemName: String
+    )
     func setupCollectionView(_ layout: UICollectionViewFlowLayout)
     func setupMainGrid()
     //-------------------
     
     func reloadData()
+    func toggleNotFound(_ isHidden: Bool)
     func startSearchUpdates(_ interval: Double)
     func showLoading()
     func hideLoading()
@@ -52,6 +57,8 @@ class HomeViewController: BaseViewController {
     var searchBar: UISearchBar!
     
     var segmentedPickerView: SegmentedPickerView!
+    
+    var emptySearchBackgroundView: UIView!
     
     var collectionView: UICollectionView!
     
@@ -96,6 +103,12 @@ extension HomeViewController: HomeViewControllerProtocol {
         }
     }
     
+    func toggleNotFound(_ isHidden: Bool) {
+        DispatchQueue.main.async { [weak self] in
+            guard let self else { return }
+            emptySearchBackgroundView.isHidden = isHidden
+        }
+    }
     
     func setupView() {
         view.backgroundColor = .white
@@ -125,6 +138,32 @@ extension HomeViewController: HomeViewControllerProtocol {
         segmentedPickerView.delegate = self
     }
     
+    func setupCollectionBackgroundView(
+        warningMessage: String,
+        imageSystemName: String
+    ) {
+        let warningLabel = UILabel()
+        warningLabel.text = warningMessage
+        warningLabel.numberOfLines = 0
+        warningLabel.textAlignment = .center
+        
+        let notFoundImageView = UIImageView(
+            image: .init(systemName: imageSystemName)
+        )
+        notFoundImageView.contentMode = .scaleAspectFit
+        
+        emptySearchBackgroundView = Grid.vertical {
+            notFoundImageView
+                .Constant(value: 200)
+            warningLabel
+                .Auto(margin: .init(10))
+        }
+        
+        emptySearchBackgroundView.isHidden = true
+        
+        collectionView.backgroundView = emptySearchBackgroundView
+    }
+    
     func setupCollectionView(_ layout: UICollectionViewFlowLayout) {
         collectionView = UICollectionView(
             frame: .zero,
@@ -134,6 +173,7 @@ extension HomeViewController: HomeViewControllerProtocol {
             SearchCell.self,
             forCellWithReuseIdentifier: SearchCell.reuseIdentifier
         )
+        
         collectionView.delegate = self
         collectionView.dataSource = self
     }
@@ -243,7 +283,14 @@ extension HomeViewController: UICollectionViewDataSource, UICollectionViewDelega
 }
 
 extension HomeViewController: SearchCellDelegate {
-    func onPlayButtonTap(_ urlString: String) {
-        presenter.onPlayTap(urlString)
+    func onPlayButtonTap(
+        _ urlString: String,
+        title: String?
+    ) {
+        presenter.onPlayTap(
+            urlString,
+            title: title
+        )
     }
 }
+

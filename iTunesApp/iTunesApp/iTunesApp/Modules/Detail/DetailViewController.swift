@@ -29,6 +29,14 @@ protocol DetailViewControllerProtocol: AnyObject {
     func setupFavImageView(systemName: String)
     
     func showLoading()
+    func showPopup(
+        title: String,
+        message: String,
+        okOption: String?,
+        cancelOption: String?,
+        onOk: ((UIAlertAction) -> Void)?,
+        onCancel: ((UIAlertAction) -> Void)?
+    )
 }
 
 final class DetailViewController: BaseViewController {
@@ -146,19 +154,27 @@ final class DetailViewController: BaseViewController {
         return container
     }()
     
-    lazy var mainGrid = Grid.vertical {
-        topContainer
-            .Auto()
-        middleContainer
-            .Constant(value: 50)
-        Grid.vertical {
+    lazy var bottomContainer: Grid = {
+        let containter = Grid.vertical {
             genreLabel
                 .Auto(margin: .init(5, 0))
             trackPriceLabel
                 .Auto()
             collectionPriceLabel
                 .Auto(margin: .init(0,0,5))
-        }.Expanded(verticalAlignment: .autoTop)
+        }
+        containter.layer.borderWidth = 1
+        containter.layer.borderColor = UIColor.lightGray.cgColor
+        return containter
+    }()
+    
+    lazy var mainGrid = Grid.vertical {
+        topContainer
+            .Auto()
+        middleContainer
+            .Constant(value: 50)
+        bottomContainer
+            .Expanded(verticalAlignment: .autoTop)
     }
     
     override func viewDidLoad() {
@@ -209,6 +225,24 @@ final class DetailViewController: BaseViewController {
 }
 
 extension DetailViewController: DetailViewControllerProtocol {
+    func showPopup(
+        title: String,
+        message: String,
+        okOption: String?,
+        cancelOption: String?,
+        onOk: ((UIAlertAction) -> Void)?,
+        onCancel: ((UIAlertAction) -> Void)?
+    ) {
+        popupError(
+            title: title,
+            message: message,
+            okOption: okOption,
+            cancelOption: cancelOption,
+            onOk: onOk,
+            onCancel: onCancel
+        )
+    }
+    
     func setupFavImageView(assetName: String) {
         setFavImage(UIImage(named: assetName))
     }

@@ -9,7 +9,6 @@ import Foundation
 
 enum HomeRoutes {
     case detailPage(_ data: SearchCellEntity?)
-    case mediaPlayer(_ urlString: String?)
 }
 
 protocol HomeRouterProtocol: AnyObject {
@@ -48,9 +47,6 @@ extension HomeRouter: HomeRouterProtocol {
         case .detailPage(let data):
             let main = viewController?.navigationController?.tabBarController as? MainViewController
             main?.presenter.detailRequest(data)
-        case .mediaPlayer(let urlString):
-            guard let viewController else { return }
-            MediaPlayer.shared.play(urlString, viewController: viewController)
         }
     }
 }

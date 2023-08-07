@@ -14,6 +14,7 @@ internal protocol ModalPickerControllerProtocol: AnyObject {
     func setupView()
     func layoutViews()
     func sendToDelegate(_ filter: String)
+    func endEditting()
 }
 
 internal protocol ModalPickerControllerDelegate: AnyObject {
@@ -29,10 +30,12 @@ internal final class ModalPickerController: UIViewController {
     
     var height: CGFloat = 0
     var horizontalInset: CGFloat = 0
-    var minTableHeight: CGFloat = 200
+    var minTableHeight: CGFloat = 150
     
     lazy var searchBar: UISearchBar = {
         let searchBar = UISearchBar()
+        searchBar.searchTextField.enablesReturnKeyAutomatically = true
+        searchBar.returnKeyType = .done
         searchBar.delegate = self
         return searchBar
     }()
@@ -63,19 +66,18 @@ internal final class ModalPickerController: UIViewController {
     }()
 
     lazy var mainGrid = Grid.vertical {
-        Grid.horizontal {
-            UIView()
-                .Constant(value: 100)
-            titleLabel
-                .Expanded()
-            cancelButton
-                .Constant(value: 100, margin: .init(top: 10, left: 10, bottom: 10, right: 10))
-        }.Constant(value: 50)
         
-        searchBar
-            .Auto()
+        titleLabel
+            .Auto(margin: .init(top: 10, left: 10, bottom: 10, right: 10))
         tableView
             .Expanded()
+        
+        Grid.horizontal {
+            searchBar
+                .Expanded()
+            cancelButton
+                .Constant(value: 100)
+        }.Auto(margin: .init(top: 0, left: 5, bottom: 10, right: 5))
     }
     
     override func viewDidLayoutSubviews() {
@@ -99,9 +101,27 @@ extension ModalPickerController: UISearchBarDelegate {
     ) {
         presenter.onSearch(searchText)
     }
+
+    func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(true, animated: true)
+    }
+    
+    func searchBarTextDidEndEditing(_ searchBar: UISearchBar) {
+        searchBar.setShowsCancelButton(false, animated: true)
+    }
+    
+    func searchBarSearchButtonClicked(_ searchBar: UISearchBar) {
+        presenter.onReturnTap()
+    }
+    func searchBarCancelButtonClicked(_ searchBar: UISearchBar) {
+        presenter.onReturnTap()
+    }
 }
 
 extension ModalPickerController: ModalPickerControllerProtocol {
+    func endEditting() {
+        view.endEditing(true)
+    }
     
     func sendToDelegate(_ filter: String) {
         delegate?.onFilterSelected(filter)
@@ -146,13 +166,8 @@ extension ModalPickerController: ModalPickerControllerProtocol {
         ? calculatedHeight
         : height
         
-        let y = window.bounds.size.height
-        - window.safeAreaInsets.top
-        - window.safeAreaInsets.bottom
-        - finalHeight
-        
         view.frame = CGRect(x: calculatedInset,
-                            y: y,
+                            y: window.safeAreaInsets.top,
                             width: calculatedWidth,
                             height: finalHeight
         )

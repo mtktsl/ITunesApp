@@ -21,11 +21,17 @@ protocol SearchCellProtocol: AnyObject {
     func setupImage(data: Data)
     func setupButtonImage(systemName: String)
     func resetViews()
-    func notifyDelegate(_ urlString: String?)
+    func notifyDelegate(
+        _ urlString: String?,
+        title: String?
+    )
 }
 
 protocol SearchCellDelegate: AnyObject {
-    func onPlayButtonTap(_ urlString: String)
+    func onPlayButtonTap(
+        _ urlString: String,
+        title: String?
+    )
 }
 
 class SearchCell: UICollectionViewCell {
@@ -115,8 +121,14 @@ class SearchCell: UICollectionViewCell {
 }
 
 extension SearchCell: SearchCellProtocol {
-    func notifyDelegate(_ urlString: String?) {
-        delegate?.onPlayButtonTap(urlString ?? "")
+    func notifyDelegate(
+        _ urlString: String?,
+        title: String?
+    ) {
+        delegate?.onPlayButtonTap(
+            urlString ?? "",
+            title: title
+        )
     }
     
     func setupButtonImage(systemName: String) {

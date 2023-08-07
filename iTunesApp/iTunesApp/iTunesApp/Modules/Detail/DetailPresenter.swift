@@ -6,6 +6,7 @@
 //
 
 import Foundation
+import FloatingViewManager
 
 extension DetailPresenter {
     enum Constants {
@@ -13,6 +14,14 @@ extension DetailPresenter {
         static let playButtonImageName = "play.circle"
         static let heartEmptyImageName = "heart"
         static let heartFillImageName = "heart.fill"
+        
+        static let favRemoveTitle = "Warning!"
+        static let favRemoveMessage = "You are about to remove this from favorites."
+        static let favRemoveOkOption = "Confirm"
+        static let favRemoveCancelOption = "Cancel"
+        
+        static let floatingPlayerStartupLocation: FloatingViewManager.FloatingLocation = .bottomLeft
+        static let floatingPlayerPipSize = CGSize(width: 180, height: 101.25)
     }
 }
 
@@ -45,18 +54,35 @@ final class DetailPresenter {
 
 extension DetailPresenter: DetailPresenterProtocol {
     func onPlayTap() {
-        router.navigate(.mediaPlayer(urlString: data?.previewURLString))
+        MediaPlayer.shared.play(
+            data?.previewURLString,
+            playingTitle: data?.trackName,
+            startUpLocation: Constants.floatingPlayerStartupLocation,
+            floatingSize: Constants.floatingPlayerPipSize
+        )
     }
     
     func onFavTap() {
-        data?.isFavorite.toggle()
-        if let data {
-            if data.isFavorite {
-                interactor.addFavorite(data)
+        if let favData = data {
+            if !favData.isFavorite {
+                interactor.addFavorite(favData)
                 view.setupFavImageView(systemName: Constants.heartFillImageName)
+                data?.isFavorite.toggle()
             } else {
-                interactor.removeFavorite(data)
-                view.setupFavImageView(systemName: Constants.heartEmptyImageName)
+                
+                view.showPopup(
+                    title: Constants.favRemoveTitle,
+                    message: Constants.favRemoveMessage,
+                    okOption: Constants.favRemoveOkOption,
+                    cancelOption: Constants.favRemoveCancelOption,
+                    onOk: { [weak self] _ in
+                        guard let self else { return }
+                        interactor.removeFavorite(favData)
+                        view.setupFavImageView(systemName: Constants.heartEmptyImageName)
+                        data?.isFavorite.toggle()
+                    },
+                    onCancel: nil
+                )
             }
         }
     }
@@ -99,7 +125,7 @@ extension DetailPresenter: DetailInteractorOutputProtocol {
     
     func onImageError() {
         view.setupImageView(
-            systemName: ApplicationConstants.ImageAssets.error.rawValue
+            systemName: ApplicationConstants.SystemImageNames.exclamationMarkTriangle
         )
     }
 }
