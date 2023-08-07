@@ -7,9 +7,11 @@
 
 import Foundation
 import iTunesAPI // <- Web result model is defined in the API
+import FloatingViewManager
 
 extension HomePresenter {
     fileprivate enum Constants {
+        static let notFoundMessage = "There is no result for the search entry."
         static let connectionErrorTitle = "Connection Error"
         static let connectionErrorMessage = "There is no internet connection."
         static let connectionErrorOkOption = "Retry"
@@ -25,6 +27,9 @@ extension HomePresenter {
         // since the user is not going to edit text for 60 seconds straight
         // limiting the application search interval to max 30 per a min. would work fine
         static let searchInterval: Double = 2
+        
+        static let floatingPlayerStartupLocation: FloatingViewManager.FloatingLocation = .bottomLeft
+        static let floatingPlayerPipSize = CGSize(width: 180, height: 101.25)
     }
 }
 
@@ -43,8 +48,12 @@ protocol HomePresenterProtocol: AnyObject {
     func searchDidChange(_ text: String)
     func filterDidChange(_ filter: String)
     func didSelectItem(at index: Int)
-    func onPlayTap(_ urlString: String?)
+    func onPlayTap(
+        _ urlString: String?,
+        title: String?
+    )
     func onReturnTap()
+    func onViewTap()
 }
 
 final class HomePresenter {
@@ -70,13 +79,25 @@ final class HomePresenter {
 }
 
 extension HomePresenter: HomePresenterProtocol {
+    func onViewTap() {
+        view.endEditting()
+    }
+    
     func onReturnTap() {
         view.endEditting()
     }
     
-    func onPlayTap(_ urlString: String?) {
+    func onPlayTap(
+        _ urlString: String?,
+        title: String?
+    ) {
         view.endEditting()
-        router.navigate(.mediaPlayer(urlString))
+        MediaPlayer.shared.play(
+            urlString,
+            playingTitle: title,
+            startUpLocation: Constants.floatingPlayerStartupLocation,
+            floatingSize: Constants.floatingPlayerPipSize
+        )
     }
     
     func didSelectItem(at index: Int) {
@@ -92,10 +113,12 @@ extension HomePresenter: HomePresenterProtocol {
     
     func filterDidChange(_ filter: String) {
         view.showLoading()
+        FloatingViewManager.shared.bringViewToFront()
     }
     
     func searchDidChange(_ text: String) {
         view.showLoading()
+        FloatingViewManager.shared.bringViewToFront()
     }
     
     func viewDidAppear() {
@@ -115,6 +138,7 @@ extension HomePresenter: HomePresenterProtocol {
         lastSearch = searchText
         lastFilter = filter
         view.showLoading()
+        FloatingViewManager.shared.bringViewToFront()
         
         guard !searchText.isEmpty else {
             view.hideLoading()
@@ -149,7 +173,13 @@ extension HomePresenter: HomePresenterProtocol {
             Constants.collectionLayout
         )
         
+        view.setupCollectionBackgroundView(
+            warningMessage: Constants.notFoundMessage,
+            imageSystemName: ApplicationConstants.SystemImageNames.textMagnifyingGlass
+        )
+        
         view.setupMainGrid()
+        view.toggleNotFound(false)
     }
     
     func getSearchResult(at index: Int) -> SearchCellEntity {
@@ -168,5 +198,7 @@ extension HomePresenter: HomeInteractorOutputProtocol {
         
         view.reloadData()
         view.hideLoading()
+        
+        view.toggleNotFound(!data.isEmpty)
     }
 }

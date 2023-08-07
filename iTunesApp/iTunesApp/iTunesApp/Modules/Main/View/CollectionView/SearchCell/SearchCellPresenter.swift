@@ -39,7 +39,10 @@ final class SearchCellPresenter {
 
 extension SearchCellPresenter: SearchCellPresenterProtocol {
     func didTapPlay() {
-        view.notifyDelegate(data.previewURLString)
+        view.notifyDelegate(
+            data.previewURLString,
+            title: data.trackName ?? data.collectionName
+        )
     }
     
     func cellPrepare() {
@@ -47,7 +50,7 @@ extension SearchCellPresenter: SearchCellPresenterProtocol {
         view.setupImage(
             imageName: ApplicationConstants
                 .ImageAssets
-                    .loading.rawValue
+                    .loading
         )
     }
     
@@ -65,7 +68,7 @@ extension SearchCellPresenter: SearchCellPresenterProtocol {
         view.setupImage(
             imageName: ApplicationConstants
                 .ImageAssets
-                    .loading.rawValue
+                    .loading
         )
         view.setupButtonImage(systemName: Constants.playButtonSystemImage)
     }
@@ -78,8 +81,8 @@ extension SearchCellPresenter: SearchCellInteractorOutputProtocol {
         } else {
             view.setupImage(
                 systemName: ApplicationConstants
-                    .ImageAssets
-                        .error.rawValue
+                    .SystemImageNames
+                        .exclamationMarkTriangle
             )
         }
     }

@@ -8,7 +8,7 @@
 import Foundation
 
 enum DetailRoutes {
-    case mediaPlayer(urlString: String?)
+
 }
 
 protocol DetailRouterProtocol {
@@ -38,10 +38,9 @@ final class DetailRouter {
 
 extension DetailRouter: DetailRouterProtocol {
     func navigate(_ route: DetailRoutes) {
-        switch route {
-        case .mediaPlayer(let urlString):
-            guard let viewController else { return }
-            MediaPlayer.shared.play(urlString, viewController: viewController)
-        }
+        /*switch route {
+        default:
+            break
+        }*/
     }
 }

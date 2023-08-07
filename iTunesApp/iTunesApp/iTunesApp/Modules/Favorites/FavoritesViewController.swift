@@ -62,7 +62,7 @@ final class FavoritesViewController: BaseViewController {
 
 extension FavoritesViewController: FavoritesViewControllerProtocol {
     func endEditting() {
-        self.isEditing = false
+        view.endEditing(true)
     }
     
     func setupView() {
@@ -135,7 +135,13 @@ extension FavoritesViewController: UISearchBarDelegate {
 }
 
 extension FavoritesViewController: SearchCellDelegate {
-    func onPlayButtonTap(_ urlString: String) {
-        presenter.onPlayTap(urlString)
+    func onPlayButtonTap(
+        _ urlString: String,
+        title: String?
+    ) {
+        presenter.onPlayTap(
+            urlString,
+            title: title
+        )
     }
 }

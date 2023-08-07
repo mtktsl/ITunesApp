@@ -6,6 +6,14 @@
 //
 
 import Foundation
+import FloatingViewManager
+
+extension FavoritesPresenter {
+    fileprivate enum Constants {
+        static let floatingPlayerStartupLocation: FloatingViewManager.FloatingLocation = .bottomLeft
+        static let floatingPlayerPipSize = CGSize(width: 180, height: 101.25)
+    }
+}
 
 protocol FavoritesPresenterProtocol: AnyObject {
     
@@ -16,7 +24,10 @@ protocol FavoritesPresenterProtocol: AnyObject {
     func onSearchDidChange(_ searchText: String?)
     func getSearch(at index: Int) -> SearchCellEntity?
     func didSelectItem(at index: Int)
-    func onPlayTap(_ urlString: String?)
+    func onPlayTap(
+        _ urlString: String?,
+        title: String?
+    )
     func onReturnTap()
 }
 
@@ -46,15 +57,24 @@ extension FavoritesPresenter: FavoritesPresenterProtocol {
         view.endEditting()
     }
     
-    func onPlayTap(_ urlString: String?) {
+    func onPlayTap(
+        _ urlString: String?,
+        title: String?
+    ) {
         view.endEditting()
-        router.navigate(.mediaPlayer(urlString))
+        MediaPlayer.shared.play(
+            urlString,
+            playingTitle: title,
+            startUpLocation: Constants.floatingPlayerStartupLocation,
+            floatingSize: Constants.floatingPlayerPipSize
+        )
     }
     
     func didSelectItem(at index: Int) {
         guard let data = getSearch(at: index)
         else { return }
         router.navigate(.detailPage(data))
+        view.endEditting()
     }
     
     

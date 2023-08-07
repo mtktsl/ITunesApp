@@ -14,6 +14,9 @@
 		6F35969A2A3CF556005F884A /* MockSplashRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F3596992A3CF556005F884A /* MockSplashRouter.swift */; };
 		6F35969C2A3CFAA1005F884A /* SplashTests.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F35969B2A3CFAA1005F884A /* SplashTests.swift */; };
 		6F75DD002A3CCFF1003CD00E /* MediaPlayer.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */; };
+		6F83CEFD2A500AC800AE59FA /* FloatingViewManager in Frameworks */ = {isa = PBXBuildFile; productRef = 6F83CEFC2A500AC800AE59FA /* FloatingViewManager */; };
+		6F83CF032A501D5500AE59FA /* MediaPlayerView in Frameworks */ = {isa = PBXBuildFile; productRef = 6F83CF022A501D5500AE59FA /* MediaPlayerView */; };
+		6F83CF052A50703300AE59FA /* AVFoundation.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6F83CF042A50703300AE59FA /* AVFoundation.framework */; };
 		6FB536012A352DBC00FAB6C3 /* AppDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */; };
 		6FB536032A352DBC00FAB6C3 /* SceneDelegate.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536022A352DBC00FAB6C3 /* SceneDelegate.swift */; };
 		6FB536052A352DBC00FAB6C3 /* HomeViewController.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FB536042A352DBC00FAB6C3 /* HomeViewController.swift */; };
@@ -57,7 +60,6 @@
 		6FBABA462A3B8D01003EE5F3 /* DetailInteractor.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */; };
 		6FBABA482A3B8D35003EE5F3 /* DetailPresenter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */; };
 		6FBABA4A2A3B8DA1003EE5F3 /* DetailRouter.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */; };
-		6FBABA4C2A3B8DE6003EE5F3 /* DetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA4B2A3B8DE6003EE5F3 /* DetailEntity.swift */; };
 		6FBABA552A3C9D22003EE5F3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FBABA542A3C9D21003EE5F3 /* CoreData.framework */; };
 		6FBABA5A2A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA582A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld */; };
 		6FBABA5D2A3CA205003EE5F3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */; };
@@ -82,6 +84,9 @@
 		6F3596992A3CF556005F884A /* MockSplashRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MockSplashRouter.swift; sourceTree = "<group>"; };
 		6F35969B2A3CFAA1005F884A /* SplashTests.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SplashTests.swift; sourceTree = "<group>"; };
 		6F75DCFF2A3CCFF1003CD00E /* MediaPlayer.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = MediaPlayer.swift; sourceTree = "<group>"; };
+		6F83CEFB2A500AB200AE59FA /* FloatingViewManager */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = FloatingViewManager; path = ../FloatingViewManager; sourceTree = "<group>"; };
+		6F83CF012A501D1F00AE59FA /* MediaPlayerView */ = {isa = PBXFileReference; lastKnownFileType = wrapper; name = MediaPlayerView; path = ../MediaPlayerView; sourceTree = "<group>"; };
+		6F83CF042A50703300AE59FA /* AVFoundation.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = AVFoundation.framework; path = System/Library/Frameworks/AVFoundation.framework; sourceTree = SDKROOT; };
 		6FB535FD2A352DBC00FAB6C3 /* iTunesApp.app */ = {isa = PBXFileReference; explicitFileType = wrapper.application; includeInIndex = 0; path = iTunesApp.app; sourceTree = BUILT_PRODUCTS_DIR; };
 		6FB536002A352DBC00FAB6C3 /* AppDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = AppDelegate.swift; sourceTree = "<group>"; };
 		6FB536022A352DBC00FAB6C3 /* SceneDelegate.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = SceneDelegate.swift; sourceTree = "<group>"; };
@@ -128,7 +133,6 @@
 		6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailInteractor.swift; sourceTree = "<group>"; };
 		6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailPresenter.swift; sourceTree = "<group>"; };
 		6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailRouter.swift; sourceTree = "<group>"; };
-		6FBABA4B2A3B8DE6003EE5F3 /* DetailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEntity.swift; sourceTree = "<group>"; };
 		6FBABA542A3C9D21003EE5F3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		6FBABA592A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchEntityCoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
@@ -146,12 +150,15 @@
 			isa = PBXFrameworksBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				6F83CF052A50703300AE59FA /* AVFoundation.framework in Frameworks */,
 				6FB536202A352F2000FAB6C3 /* GridLayout in Frameworks */,
 				6FBABA552A3C9D22003EE5F3 /* CoreData.framework in Frameworks */,
+				6F83CEFD2A500AC800AE59FA /* FloatingViewManager in Frameworks */,
 				6FB536222A352F2300FAB6C3 /* LoadingShowerController in Frameworks */,
 				6FB536422A35F10600FAB6C3 /* NetworkStatusObserver in Frameworks */,
 				6FB5365B2A36404700FAB6C3 /* iTunesAPI in Frameworks */,
 				6FB5365D2A3650C800FAB6C3 /* SegmentedPickerView in Frameworks */,
+				6F83CF032A501D5500AE59FA /* MediaPlayerView in Frameworks */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -275,6 +282,8 @@
 				6FB536402A35F0E600FAB6C3 /* NetworkStatusObserver */,
 				6FB5361B2A352EC700FAB6C3 /* LoadingShowerController */,
 				6FB536582A363FA900FAB6C3 /* SegmentedPickerView */,
+				6F83CEFB2A500AB200AE59FA /* FloatingViewManager */,
+				6F83CF012A501D1F00AE59FA /* MediaPlayerView */,
 			);
 			name = Packages;
 			sourceTree = "<group>";
@@ -282,6 +291,7 @@
 		6FB5361E2A352F2000FAB6C3 /* Frameworks */ = {
 			isa = PBXGroup;
 			children = (
+				6F83CF042A50703300AE59FA /* AVFoundation.framework */,
 				6FBABA542A3C9D21003EE5F3 /* CoreData.framework */,
 			);
 			name = Frameworks;
@@ -375,7 +385,6 @@
 				6FBABA432A3B8CAD003EE5F3 /* DetailViewController.swift */,
 				6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */,
 				6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */,
-				6FBABA4B2A3B8DE6003EE5F3 /* DetailEntity.swift */,
 				6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */,
 			);
 			path = Detail;
@@ -438,6 +447,8 @@
 				6FB536412A35F10600FAB6C3 /* NetworkStatusObserver */,
 				6FB5365A2A36404700FAB6C3 /* iTunesAPI */,
 				6FB5365C2A3650C800FAB6C3 /* SegmentedPickerView */,
+				6F83CEFC2A500AC800AE59FA /* FloatingViewManager */,
+				6F83CF022A501D5500AE59FA /* MediaPlayerView */,
 			);
 			productName = iTunesApp;
 			productReference = 6FB535FD2A352DBC00FAB6C3 /* iTunesApp.app */;
@@ -547,7 +558,6 @@
 				6FBABA352A3A0276003EE5F3 /* SearchCellInteractor.swift in Sources */,
 				6FBABA2C2A39C5A7003EE5F3 /* MainEntity.swift in Sources */,
 				6FB5362D2A35335B00FAB6C3 /* SplashInteractor.swift in Sources */,
-				6FBABA4C2A3B8DE6003EE5F3 /* DetailEntity.swift in Sources */,
 				6FB536542A3603ED00FAB6C3 /* MainViewController.swift in Sources */,
 				6FB536262A3530BE00FAB6C3 /* HomeInteractor.swift in Sources */,
 				6FB536572A362A7900FAB6C3 /* NSLayoutConstraint+Extension.swift in Sources */,
@@ -746,6 +756,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTunesApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -774,6 +785,7 @@
 				ASSETCATALOG_COMPILER_GLOBAL_ACCENT_COLOR_NAME = AccentColor;
 				CODE_SIGN_STYLE = Automatic;
 				CURRENT_PROJECT_VERSION = 1;
+				DEVELOPMENT_TEAM = "";
 				GENERATE_INFOPLIST_FILE = YES;
 				INFOPLIST_FILE = iTunesApp/Info.plist;
 				INFOPLIST_KEY_UIApplicationSupportsIndirectInputEvents = YES;
@@ -828,6 +840,14 @@
 /* End XCConfigurationList section */
 
 /* Begin XCSwiftPackageProductDependency section */
+		6F83CEFC2A500AC800AE59FA /* FloatingViewManager */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = FloatingViewManager;
+		};
+		6F83CF022A501D5500AE59FA /* MediaPlayerView */ = {
+			isa = XCSwiftPackageProductDependency;
+			productName = MediaPlayerView;
+		};
 		6FB5361F2A352F2000FAB6C3 /* GridLayout */ = {
 			isa = XCSwiftPackageProductDependency;
 			productName = GridLayout;

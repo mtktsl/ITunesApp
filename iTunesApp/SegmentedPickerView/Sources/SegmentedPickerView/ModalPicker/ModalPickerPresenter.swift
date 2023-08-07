@@ -19,6 +19,7 @@ internal protocol ModalPickerPresenterProtocol {
     func getFilter(at index: Int) -> String?
     func onCancelTap()
     func onDisappear()
+    func onReturnTap()
 }
 
 internal final class ModalPickerPresenter {
@@ -41,6 +42,10 @@ internal final class ModalPickerPresenter {
 }
 
 extension ModalPickerPresenter: ModalPickerPresenterProtocol {
+    func onReturnTap() {
+        view.endEditting()
+    }
+    
     func onDisappear() {
         if let selectedFilter {
             view.sendToDelegate(selectedFilter)

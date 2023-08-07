@@ -6,8 +6,12 @@
 //
 
 import UIKit
-import AVKit
-import AVFoundation
+
+import FloatingViewManager
+import MediaPlayerView
+import iTunesAPI // <- to get the media extension type
+
+typealias FM = FloatingViewManager
 
 final class MediaPlayerWeakRef {
     weak var ref: MediaPlayerDelegate?
@@ -23,31 +27,108 @@ protocol MediaPlayerDelegate: AnyObject {
 final class MediaPlayer {
     
     static let shared = MediaPlayer()
+    
     var delegates = [MediaPlayerWeakRef]()
+    var floatingViewSize: CGSize = .zero
+    weak var mpView: MediaPlayerView?
     
     private init() {}
     
-    func play(_ urlString: String?, viewController: UIViewController) {
+    private func isVideo(_ urlString: String) -> Bool {
+        let maxCharCount = max(
+            iTunesAPI.MediaInfo.audioContentExtension.count,
+            iTunesAPI.MediaInfo.videoContentExtension.count
+        )
+        let lastChars = urlString.suffix(maxCharCount)
+        
+        if lastChars == iTunesAPI.MediaInfo.audioContentExtension {
+            return false
+        } else {
+            return true
+        }
+    }
+    
+    func pause() {
+        //TODO: implement this function //make mediaplayerView playTap public
+    }
+    
+    func resume() {
+        //TODO: implement this function //make mediaplayerView playTap public
+    }
+    
+    func makeView(_ color: UIColor) -> UIView {
+        let view = UIView()
+        view.backgroundColor = color
+        return view
+    }
+    
+    func play(
+        _ urlString: String?,
+        playingTitle: String? = nil,
+        startUpLocation: FloatingViewManager.FloatingLocation,
+        floatingSize: CGSize
+    ) {
         guard let urlString,
-              let url = URL(string: urlString)
+              let mpView = MediaPlayerView
+                .build(urlString,
+                       isVideo: isVideo(urlString),
+                       playingTitle: playingTitle)
         else {
             notifyDelegates()
             return
         }
-        let playerVC = AVPlayerViewController()
         
-        let player = AVPlayer(url: url)
-        playerVC.player = player
+        mpView.layer.cornerRadius = 10
+        mpView.layer.masksToBounds = true
         
-        viewController.present(
-            playerVC,
-            animated: true
-        ) { player.play() }
+        self.floatingViewSize = floatingSize
+        
+        FM.shared.attach(
+            mpView,
+            startUpLocation: startUpLocation,
+            startUpSize: .custom(size: floatingViewSize)
+        )
+        self.mpView = nil
+        
+        mpView.delegate = self
+        mpView.titleLabel.isHidden = true
+        mpView.infoLabel.isHidden = true
+        
+        self.mpView = mpView
     }
     
     private func notifyDelegates() {
+        delegates = delegates.compactMap({ $0 })
         for delegate in delegates {
             delegate.ref?.urlError()
         }
+    }
+}
+
+extension MediaPlayer: MediaPlayerViewDelegate {
+    
+    func onPipTap(_ mediaPlayerView: MediaPlayerView) {
+        
+        let isFullScreen = FM.shared.viewCurrentSize == .fullScreen
+        
+        mpView?.titleLabel.isHidden = isFullScreen
+        mpView?.infoLabel.isHidden = isFullScreen
+        
+        isFullScreen
+        ? FM.shared.resizeView(to: .custom(size: floatingViewSize))
+        : FM.shared.resizeView(to: .fullScreen)
+    }
+    
+    func onCloseTap(_ mediaPlayerView: MediaPlayerView) {
+        
+        let isFullScreen = FM.shared.viewCurrentSize == .fullScreen
+        
+        mpView?.titleLabel.isHidden = isFullScreen
+        mpView?.infoLabel.isHidden = isFullScreen
+        
+        isFullScreen
+        ? FM.shared.resizeView(to: .custom(size: floatingViewSize))
+            { FM.shared.removeView() }
+        : FM.shared.removeView()
     }
 }

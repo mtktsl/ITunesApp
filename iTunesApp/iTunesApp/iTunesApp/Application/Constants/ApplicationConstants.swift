@@ -35,8 +35,12 @@ enum ApplicationConstants {
         case movie = "Movie"
     }
     
-    enum ImageAssets: String {
-        case loading
-        case error = "exclamationmark.triangle"
+    enum ImageAssets {
+        static let loading = "loading"
+    }
+    
+    enum SystemImageNames {
+        static let exclamationMarkTriangle = "exclamationmark.triangle"
+        static let textMagnifyingGlass = "text.magnifyingglass"
     }
 }

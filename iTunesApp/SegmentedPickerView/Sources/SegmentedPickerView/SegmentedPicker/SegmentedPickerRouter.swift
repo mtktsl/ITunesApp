@@ -50,12 +50,9 @@ extension SegmentedPickerRouter: SegmentedPickerRouterProtocol {
         pickerVC.modalPresentationStyle = .formSheet
         pickerVC.titleLabel.text = pickerTitle
         pickerVC.cancelButton.backgroundColor = controllerView?.popupCancelColor ?? .gray
-        //pickerVC.collection = filters
         controllerView?
             .window?
             .rootViewController?
-            .present(pickerVC, animated: true) {
-                
-            }
+            .present(pickerVC, animated: true)
     }
 }
