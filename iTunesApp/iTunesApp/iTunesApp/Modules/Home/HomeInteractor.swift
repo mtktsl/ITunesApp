@@ -38,9 +38,7 @@ protocol HomeInteractorOutputProtocol {
 
 final class HomeInteractor {
     var output: HomeInteractorOutputProtocol!
-    let service = iTunesAPI(
-        sourceURL: ApplicationConstants.urlConfig
-    )
+    let service: iTunesAPIProtocol = iTunesAPI()
 }
 
 extension HomeInteractor: HomeInteractorProtocol {

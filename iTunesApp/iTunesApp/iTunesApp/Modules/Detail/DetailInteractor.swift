@@ -22,7 +22,7 @@ protocol DetailInteractorOutputProtocol {
 
 final class DetailInteractor {
     var output: DetailInteractorOutputProtocol!
-    let service = iTunesAPI(sourceURL: ApplicationConstants.urlConfig)
+    let service: iTunesAPIProtocol = iTunesAPI()
 }
 
 extension DetailInteractor: DetailInteractorProtocol {

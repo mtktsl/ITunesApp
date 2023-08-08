@@ -9,13 +9,6 @@ import Foundation
 import iTunesAPI
 
 enum ApplicationConstants {
-    //url config for itunes api
-    static let urlConfig = ITunesURLConfigModel(
-        baseURLString: "https://itunes.apple.com",
-        routeString: "search",
-        queryStarter: "?",
-        querySeperator: "&"
-    )
     
     //country code for the user to be used in itunes api searches
     static var countryCode: String {
