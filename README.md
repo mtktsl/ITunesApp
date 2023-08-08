@@ -14,22 +14,33 @@
 <br/><strong>&bull; iTunesApi:</strong> It is used to fetch itunes data info from web.
 <br/><strong>&bull; NetworkStatusObserver:</strong> It is used to observer connection availability.
 
-## App information:
-&bull; Home Page:
+# App information:
+## &bull; Home Page:
 <br/>
-<img src="https://i.hizliresim.com/gvyb089.jpg"
-data-canonical-src="https://i.hizliresim.com/gvyb089.jpg"
+<img src="https://i.hizliresim.com/iuuvj8h.jpg"
+data-canonical-src="https://i.hizliresim.com/iuuvj8h.jpg"
 width="180" height="380" />
-<hr>
+
+## &bull; Play media in picture in picture mode
+
+<img src="https://i.hizliresim.com/619eehw.jpg"
+data-canonical-src="https://i.hizliresim.com/619eehw.jpg"
+width="180" height="380" />
+<br/>
+
+&bull; Keep navigating through the pages while pip mode is playing your media
+<br/>
+<img src="https://i.hizliresim.com/akeeo53.jpg"
+data-canonical-src="https://i.hizliresim.com/akeeo53.jpg"
+width="180" height="380" />
 &bull;
-<br/>
-<img src="https://i.hizliresim.com/lqpqxej.jpg"
-data-canonical-src="https://i.hizliresim.com/lqpqxej.jpg"
+<img src="https://i.hizliresim.com/buim7qv.jpg"
+data-canonical-src="https://i.hizliresim.com/buim7qv.jpg"
 width="180" height="380" />
-<hr>
-&bull;
 <br/>
-<img src="https://i.hizliresim.com/de4qh6m.jpg"
-data-canonical-src="https://i.hizliresim.com/de4qh6m.jpg
+
+&bull; You can toggle fullscreen mode by pressing the pip button on top right of the media player:
+<br/>
+<img src="https://i.hizliresim.com/k2k7khw.jpg"
+data-canonical-src="https://i.hizliresim.com/k2k7khw.jpg"
 width="180" height="380" />
-<hr>
