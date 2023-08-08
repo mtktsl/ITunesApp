@@ -18,11 +18,8 @@ public protocol iTunesAPIProtocol {
 }
 
 public final class iTunesAPI {
-    public private(set) var sourceURL: ITunesURLConfigModel
-    
-    public init(sourceURL: ITunesURLConfigModel) {
-        self.sourceURL = sourceURL
-    }
+    public private(set) var sourceURL: ITunesURLConfigModel = Constants.urlConfig
+    public init() {}
 }
 
 extension iTunesAPI: iTunesAPIProtocol {

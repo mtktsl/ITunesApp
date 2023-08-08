@@ -18,9 +18,7 @@ protocol SearchCellInteractorOutputProtocol: AnyObject {
 
 final class SearchCellInteractor {
     var output: SearchCellInteractorOutputProtocol!
-    let service = iTunesAPI(
-        sourceURL: ApplicationConstants.urlConfig
-    )
+    var service: iTunesAPIProtocol = iTunesAPI()
 }
 
 
