@@ -41,7 +41,6 @@ protocol HomeViewControllerProtocol: AnyObject {
     
     func reloadData()
     func toggleNotFound(_ isHidden: Bool)
-    func startSearchUpdates(_ interval: Double)
     func showLoading()
     func hideLoading()
     func endEditting()
@@ -78,22 +77,6 @@ class HomeViewController: BaseViewController {
 extension HomeViewController: HomeViewControllerProtocol {
     func endEditting() {
         self.view.endEditing(true)
-    }
-    
-    func startSearchUpdates(_ interval: Double) {
-        self.timer = Timer.scheduledTimer(
-            withTimeInterval: interval,
-            repeats: true,
-            block: { [weak self] _ in
-                guard let self else { return }
-                presenter.onSearchUpdate(
-                    searchText: searchBar.text ?? "",
-                    filter: selectedFilter
-                    ?? ApplicationConstants
-                        .AvailableFilters.all.rawValue
-                )
-            }
-        )
     }
     
     func reloadData() {
@@ -218,7 +201,11 @@ extension HomeViewController: HomeViewControllerProtocol {
 
 extension HomeViewController: UISearchBarDelegate {
     func searchBar(_ searchBar: UISearchBar, textDidChange searchText: String) {
-        presenter.searchDidChange(searchText)
+        //presenter.searchDidChange(searchText)
+        presenter.onSearchUpdate(
+            searchText: searchText,
+            filter: segmentedPickerView.currentSelection ?? ""
+        )
     }
     
     func searchBarTextDidBeginEditing(_ searchBar: UISearchBar) {
@@ -239,8 +226,12 @@ extension HomeViewController: UISearchBarDelegate {
 
 extension HomeViewController: SegmentedPickerViewDelegate {
     func onSelectionChanged(_ newSelection: String) {
-        selectedFilter = newSelection
-        presenter.filterDidChange(newSelection)
+        //selectedFilter = newSelection
+        //presenter.filterDidChange(newSelection)
+        presenter.onSearchUpdate(
+            searchText: searchBar.text ?? "",
+            filter: newSelection
+        )
     }
 }
 

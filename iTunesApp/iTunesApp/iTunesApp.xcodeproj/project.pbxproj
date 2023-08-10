@@ -229,6 +229,7 @@
 		6FB536142A352DFF00FAB6C3 /* Modules */ = {
 			isa = PBXGroup;
 			children = (
+				6FBABA2E2A3A016E003EE5F3 /* Collection */,
 				6FB536172A352E4E00FAB6C3 /* Base */,
 				6FB536292A3532F200FAB6C3 /* Splash */,
 				6FB5364C2A35FBB000FAB6C3 /* Main */,
@@ -354,18 +355,17 @@
 		6FBABA2D2A3A0159003EE5F3 /* View */ = {
 			isa = PBXGroup;
 			children = (
-				6FBABA2E2A3A016E003EE5F3 /* CollectionView */,
 			);
 			path = View;
 			sourceTree = "<group>";
 		};
-		6FBABA2E2A3A016E003EE5F3 /* CollectionView */ = {
+		6FBABA2E2A3A016E003EE5F3 /* Collection */ = {
 			isa = PBXGroup;
 			children = (
 				6FBABA2F2A3A017A003EE5F3 /* SearchCell */,
 				6FBABA362A3A03CF003EE5F3 /* SearchCollectionFlowLayout.swift */,
 			);
-			path = CollectionView;
+			path = Collection;
 			sourceTree = "<group>";
 		};
 		6FBABA2F2A3A017A003EE5F3 /* SearchCell */ = {

@@ -12,6 +12,7 @@ import iTunesAPI
 extension HomeInteractor {
     fileprivate enum Constants {
         static let visibleFilterCount = 2
+        static let searchDelay = 0.5
     }
 }
 
@@ -23,7 +24,7 @@ protocol HomeInteractorProtocol {
     
     func performQuery(
         searchText: String,
-        filter: String
+        filterText: String
     )
     
     func apiToEntity(_ apiModel: ITunesResultModel) -> SearchCellEntity
@@ -38,7 +39,46 @@ protocol HomeInteractorOutputProtocol {
 
 final class HomeInteractor {
     var output: HomeInteractorOutputProtocol!
-    let service: iTunesAPIProtocol = iTunesAPI()
+    var service: iTunesAPIProtocol = iTunesAPI()
+    
+    var searchQueryWorkItem: DispatchWorkItem?
+    
+    private func makeRequest(
+        searchText: String,
+        filterText: String
+    ) {
+        guard let itunesFilter = ITunesFilterConfig.mapping[filterText]
+        else {
+            output.onSearchResult([], forText: searchText, forFilter: filterText)
+            return
+        }
+        
+        _ = service.performQuery(
+            .init(
+                term: searchText,
+                country: ApplicationConstants.countryCode,
+                entity: itunesFilter.entity,
+                attribute: itunesFilter.attribute
+            )
+        ) { [weak self] result in
+            guard let self else { return }
+            
+            switch result {
+            case .success(let data):
+                output.onSearchResult(
+                    data.results ?? [],
+                    forText: searchText,
+                    forFilter: filterText
+                )
+            case .failure(_):
+                output.onSearchResult(
+                    [],
+                    forText: searchText,
+                    forFilter: filterText
+                )
+            }
+        }
+    }
 }
 
 extension HomeInteractor: HomeInteractorProtocol {
@@ -74,38 +114,18 @@ extension HomeInteractor: HomeInteractorProtocol {
     
     func performQuery(
         searchText: String,
-        filter: String
+        filterText: String
     ) {
-        guard let itunesFilter = ITunesFilterConfig.mapping[filter]
-        else {
-            output.onSearchResult([], forText: searchText, forFilter: filter)
-            return
-        }
-        
-        service.performQuery(
-            .init(
-                term: searchText,
-                country: ApplicationConstants.countryCode,
-                entity: itunesFilter.entity,
-                attribute: itunesFilter.attribute
-            )
-        ) { [weak self] result in
+        searchQueryWorkItem?.cancel()
+        searchQueryWorkItem = DispatchWorkItem { [weak self] in
             guard let self else { return }
-            
-            switch result {
-            case .success(let data):
-                output.onSearchResult(
-                    data.results ?? [],
-                    forText: searchText,
-                    forFilter: filter
-                )
-            case .failure(_):
-                output.onSearchResult(
-                    [],
-                    forText: searchText,
-                    forFilter: filter
-                )
-            }
+            makeRequest(searchText: searchText, filterText: filterText)
+        }
+        if searchQueryWorkItem != nil {
+            DispatchQueue.main.asyncAfter(
+                deadline: .now() + Constants.searchDelay,
+                execute: searchQueryWorkItem!
+            )
         }
     }
     

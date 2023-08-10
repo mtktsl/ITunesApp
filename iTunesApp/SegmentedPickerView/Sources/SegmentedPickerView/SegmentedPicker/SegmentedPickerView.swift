@@ -48,6 +48,8 @@ internal protocol SegmentedPickerViewProtocol: AnyObject {
 
 public class SegmentedPickerView: UIView {
     public let segmentedControl: UISegmentedControl
+
+    public var currentSelection: String?
     
     public let moreButton: UIButton
     
@@ -97,6 +99,7 @@ public class SegmentedPickerView: UIView {
     ) {
         segmentedControl = UISegmentedControl(items: config.segmentedFilters)
         moreButton = UIButton(frame: .zero)
+        currentSelection = config.segmentedFilters?.first ?? config.moreFilters?.first
         
         super.init(frame: .zero)
         self.backgroundColor = Constants.segmentGray
@@ -155,6 +158,7 @@ extension SegmentedPickerView: SegmentedPickerViewProtocol {
             delegate?.onSelectionChanged(
                 filters[segmentedControl.selectedSegmentIndex]
             )
+            currentSelection = filters[segmentedControl.selectedSegmentIndex]
             toggleMoreButton(buttonTitle, selected: false)
         }
     }
@@ -232,6 +236,7 @@ extension SegmentedPickerView: SegmentedPickerViewProtocol {
 extension SegmentedPickerView: ModalPickerControllerDelegate {
     func onFilterSelected(_ filter: String) {
         delegate?.onSelectionChanged(filter)
+        currentSelection = filter
         segmentedControl.selectedSegmentIndex = -1
         toggleMoreButton(filter, selected: true)
     }

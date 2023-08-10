@@ -115,8 +115,8 @@ extension MediaPlayer: MediaPlayerViewDelegate {
         mpView?.infoLabel.isHidden = isFullScreen
         
         isFullScreen
-        ? FM.shared.resizeView(to: .custom(size: floatingViewSize))
-        : FM.shared.resizeView(to: .fullScreen)
+        ? FM.shared.resizeView(to: .custom(size: floatingViewSize)) {}
+        : FM.shared.resizeView(to: .fullScreen) {}
     }
     
     func onCloseTap(_ mediaPlayerView: MediaPlayerView) {
