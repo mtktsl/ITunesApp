@@ -60,6 +60,7 @@ final class HomePresenter {
     unowned var view: HomeViewControllerProtocol!
     let router: HomeRouterProtocol!
     let interactor: HomeInteractorProtocol!
+    var floatingViewManager: FloatingViewManagerProtocol?
     
     var isPopupOpen = false
     
@@ -70,11 +71,13 @@ final class HomePresenter {
     init(
         view: HomeViewControllerProtocol,
         router: HomeRouterProtocol,
-        interactor: HomeInteractorProtocol
+        interactor: HomeInteractorProtocol,
+        floatingViewManager: FloatingViewManagerProtocol? = FloatingViewManager.shared
     ) {
         self.view = view
         self.router = router
         self.interactor = interactor
+        self.floatingViewManager = floatingViewManager
     }
 }
 
@@ -123,7 +126,7 @@ extension HomePresenter: HomePresenterProtocol {
     
     func viewDidAppear() {
         interactor.reloadCoreData()
-        view.startSearchUpdates(Constants.searchInterval)
+        //view.startSearchUpdates(Constants.searchInterval)
     }
     
     
@@ -131,22 +134,12 @@ extension HomePresenter: HomePresenterProtocol {
         searchText: String,
         filter: String
     ) {
-        if lastSearch == searchText && lastFilter == filter {
-            view.hideLoading()
-            return
-        }
-        lastSearch = searchText
-        lastFilter = filter
         view.showLoading()
         FloatingViewManager.shared.bringViewToFront()
         
-        guard !searchText.isEmpty else {
-            view.hideLoading()
-            return
-        }
         interactor.performQuery(
             searchText: searchText,
-            filter: filter
+            filterText: filter
         )
     }
     

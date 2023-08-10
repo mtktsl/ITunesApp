@@ -19,12 +19,16 @@ protocol SearchCellInteractorOutputProtocol: AnyObject {
 final class SearchCellInteractor {
     var output: SearchCellInteractorOutputProtocol!
     var service: iTunesAPIProtocol = iTunesAPI()
+    var imageDataTask: URLSessionDataTask?
+    deinit {
+        imageDataTask?.cancel()
+    }
 }
 
 
 extension SearchCellInteractor: SearchCellInteractorProtocol {
     func fetchImage(_ urlString: String) {
-        service.fetchImage(
+        imageDataTask = service.fetchImage(
             urlString
         ) { [weak self] result in
             guard let self else { return }

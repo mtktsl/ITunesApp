@@ -9,12 +9,12 @@ public protocol iTunesAPIProtocol {
     func performQuery(
         _ parameters: ITunesParametersModel,
         completion: @escaping (Result<ITunesTopModel, DataProviderServiceError>) -> Void
-    )
+    ) -> URLSessionDataTask?
     
     func fetchImage(
         _ urlString: String,
         completion: @escaping (Result<Data, DataProviderServiceError>) -> Void
-    )
+    ) -> URLSessionDataTask?
 }
 
 public final class iTunesAPI {
@@ -30,10 +30,10 @@ extension iTunesAPI: iTunesAPIProtocol {
     public func performQuery(
         _ parameters: ITunesParametersModel,
         completion: @escaping (Result<ITunesTopModel, DataProviderServiceError>) -> Void
-    ) {
+    ) -> URLSessionDataTask? {
         let urlString = sourceURL.generateQueryURLString(parameters)
         
-        DataProviderService.shared.fetchData(
+        return DataProviderService.shared.fetchData(
             from: urlString,
             dataType: ITunesTopModel.self,
             decode: true) { result in
@@ -49,8 +49,8 @@ extension iTunesAPI: iTunesAPIProtocol {
     public func fetchImage(
         _ urlString: String,
         completion: @escaping (Result<Data, DataProviderServiceError>) -> Void
-    ) {
-        DataProviderService.shared.fetchData(
+    ) -> URLSessionDataTask? {
+        return DataProviderService.shared.fetchData(
             from: urlString,
             dataType: Data.self,
             decode: false) { [weak self] result in

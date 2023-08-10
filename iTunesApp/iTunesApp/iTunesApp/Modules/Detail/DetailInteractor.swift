@@ -23,6 +23,10 @@ protocol DetailInteractorOutputProtocol {
 final class DetailInteractor {
     var output: DetailInteractorOutputProtocol!
     let service: iTunesAPIProtocol = iTunesAPI()
+    var imageDataTask: URLSessionDataTask?
+    deinit {
+        imageDataTask?.cancel()
+    }
 }
 
 extension DetailInteractor: DetailInteractorProtocol {
@@ -45,7 +49,7 @@ extension DetailInteractor: DetailInteractorProtocol {
             return
         }
         
-        service.fetchImage(urlString) { [weak self] result in
+        imageDataTask = service.fetchImage(urlString) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let data):
