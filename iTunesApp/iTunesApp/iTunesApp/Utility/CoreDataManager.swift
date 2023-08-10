@@ -9,9 +9,17 @@ import Foundation
 import CoreData
 import UIKit
 
+protocol CoreDataManagerProtocol {
+    func addFavorite(_ entity: SearchCellEntity) -> Bool
+    func removeFavorite(_ entity: SearchCellEntity) -> Bool
+    func fetchFavorites() -> [SearchCellEntity]
+    func reloadData()
+    func exists(_ entity: SearchCellEntity) -> Bool
+}
+
 final class CoreDataManager {
     
-    static let shared = CoreDataManager()
+    static let shared: CoreDataManagerProtocol = CoreDataManager()
     
     private var context: NSManagedObjectContext? {
         return  (UIApplication.shared.delegate as? AppDelegate)?.persistentContainer.viewContext
@@ -21,11 +29,12 @@ final class CoreDataManager {
     
     private init() {}
     
-    private func saveContext(_ context: NSManagedObjectContext) {
+    private func saveContext(_ context: NSManagedObjectContext) -> Bool {
         do {
             try context.save()
+            return true
         } catch {
-            print("ERROR saving coredata")
+            return false
         }
     }
     
@@ -66,19 +75,24 @@ final class CoreDataManager {
         
         return newItem
     }
-    
-    func addFavorite(_ entity: SearchCellEntity) {
+}
+
+extension CoreDataManager: CoreDataManagerProtocol {
+    func addFavorite(_ entity: SearchCellEntity) -> Bool {
         guard let context = self.context
-        else { return }
+        else { return false }
         
         let _ = entityToCore(entity: entity, context: context)
-        saveContext(context)
+        let result = saveContext(context)
         reloadData()
+        return result
     }
     
-    func removeFavorite(_ entity: SearchCellEntity) {
+    func removeFavorite(_ entity: SearchCellEntity) -> Bool {
         guard let context = self.context
-        else { return }
+        else { return false }
+        
+        var result = false
         
         if let itemToRemove = lastFetch.first(where: {
             $0.trackId == Int(entity.trackId ?? -1)
@@ -86,9 +100,11 @@ final class CoreDataManager {
             && $0.collectionId == Int(entity.collectionId ?? -1)
         }) {
             context.delete(itemToRemove)
-            saveContext(context)
+            result = saveContext(context)
         }
         reloadData()
+        
+        return result
     }
     
     func fetchFavorites() -> [SearchCellEntity] {

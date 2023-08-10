@@ -4,7 +4,7 @@ public protocol DataProviderServiceProtocol: AnyObject {
     func fetchData<T: Decodable>(from urlString: String,
                                  dataType: T.Type,
                                  decode: Bool,
-                                 completion: @escaping (Result<T, DataProviderServiceError>) -> Void)
+                                 completion: @escaping (Result<T, DataProviderServiceError>) -> Void) -> URLSessionDataTask?
 }
 
 public class DataProviderService: DataProviderServiceProtocol {
@@ -13,18 +13,20 @@ public class DataProviderService: DataProviderServiceProtocol {
     
     private init() {}
     
-    public func fetchData<T: Decodable>(from urlString: String,
-                                        dataType: T.Type = Data.self,
-                                        decode: Bool = false,
-                                        completion: @escaping (Result<T, DataProviderServiceError>) -> Void) {
+    public func fetchData<T: Decodable>(
+        from urlString: String,
+        dataType: T.Type = Data.self,
+        decode: Bool = false,
+        completion: @escaping (Result<T, DataProviderServiceError>) -> Void
+    ) -> URLSessionDataTask? {
         
         guard let url = URL(string: urlString)
         else {
             completion(.failure(.urlError))
-            return
+            return nil
         }
         
-        URLSession.shared.dataTask(with: url) { data, response, error in
+        let task = URLSession.shared.dataTask(with: url) { data, response, error in
             
             guard let response = response as? HTTPURLResponse
             else {
@@ -58,6 +60,10 @@ public class DataProviderService: DataProviderServiceProtocol {
                 completion(.failure(.decodeError))
             }
             
-        }.resume()
+        }
+        
+        task.resume()
+        
+        return task
     }
 }

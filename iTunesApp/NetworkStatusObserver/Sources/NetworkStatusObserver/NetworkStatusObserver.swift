@@ -1,10 +1,6 @@
 import Foundation
 import Network
 
-public protocol NetworkStatusObserverDelegate: AnyObject {
-    func onConnectionChanged(_ isConnected: Bool)
-}
-
 public class WeakRef  {
     weak var ref: NetworkStatusObserverDelegate?
     public init(_ ref: NetworkStatusObserverDelegate) {
@@ -12,9 +8,21 @@ public class WeakRef  {
     }
 }
 
+public protocol NetworkStatusObserverDelegate: AnyObject {
+    func onConnectionChanged(_ isConnected: Bool)
+}
+
+public protocol NetworkStatusObserverProtocol {
+    var delegates: [WeakRef] { get set }
+    var isConnected: Bool { get }
+    
+    func startObserving()
+    func stopObserving()
+}
+
 public final class NetworkStatusObserver {
     
-    public static let shared = NetworkStatusObserver()
+    public static let shared: NetworkStatusObserverProtocol = NetworkStatusObserver()
     
     public var delegates = [WeakRef]()
     
@@ -27,6 +35,14 @@ public final class NetworkStatusObserver {
     
     private init() {}
     
+    private func notifyDelegates(_ isConnected: Bool) {
+        for delegate in delegates {
+            delegate.ref?.onConnectionChanged(isConnected)
+        }
+    }
+}
+
+extension NetworkStatusObserver: NetworkStatusObserverProtocol {
     public func startObserving() {
         networkMonitor.start(queue: networkQueue)
         networkMonitor.pathUpdateHandler = { [weak self] path in
@@ -45,12 +61,6 @@ public final class NetworkStatusObserver {
             
             isLoadedOnce = true
             notifyDelegates(isConnected)
-        }
-    }
-    
-    private func notifyDelegates(_ isConnected: Bool) {
-        for delegate in delegates {
-            delegate.ref?.onConnectionChanged(isConnected)
         }
     }
     
