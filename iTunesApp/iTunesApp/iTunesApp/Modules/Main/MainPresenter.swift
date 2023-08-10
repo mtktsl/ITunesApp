@@ -29,19 +29,21 @@ final class MainPresenter {
     unowned var view: MainViewControllerProtocol!
     let interactor: MainInteractorProtocol!
     let router: MainRouterProtocol!
+    var mediaPlayer: MediaPlayerProtocol?
     
     private var isPopupOpen = false
     
     init(
         view: MainViewControllerProtocol!,
         interactor: MainInteractorProtocol!,
-        router: MainRouterProtocol!
+        router: MainRouterProtocol!,
+        mediaPlayer: MediaPlayerProtocol? = MediaPlayer.shared
     ) {
         self.view = view
         self.interactor = interactor
         self.router = router
-        
-        MediaPlayer.shared.delegates.append(.init(self))
+        self.mediaPlayer = mediaPlayer
+        self.mediaPlayer?.delegates.append(.init(self))
     }
 }
 

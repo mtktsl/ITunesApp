@@ -40,6 +40,7 @@ protocol HomeInteractorOutputProtocol {
 final class HomeInteractor {
     var output: HomeInteractorOutputProtocol!
     var service: iTunesAPIProtocol = iTunesAPI()
+    var coreDataManager: CoreDataManagerProtocol = CoreDataManager.shared
     
     var searchQueryWorkItem: DispatchWorkItem?
     
@@ -83,7 +84,7 @@ final class HomeInteractor {
 
 extension HomeInteractor: HomeInteractorProtocol {
     func reloadCoreData() {
-        CoreDataManager.shared.reloadData()
+        coreDataManager.reloadData()
     }
     
     func apiToEntity(_ data: ITunesResultModel) -> SearchCellEntity {
@@ -104,12 +105,12 @@ extension HomeInteractor: HomeInteractorProtocol {
             previewURLString: data.previewUrl,
             isFavorite: false
         )
-        entity.isFavorite = CoreDataManager.shared.exists(entity)
+        entity.isFavorite = coreDataManager.exists(entity)
         return entity
     }
     
     func isFavorite(_ data: SearchCellEntity) -> Bool {
-        return CoreDataManager.shared.exists(data)
+        return coreDataManager.exists(data)
     }
     
     func performQuery(

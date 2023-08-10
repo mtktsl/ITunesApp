@@ -63,6 +63,7 @@
 		6FBABA552A3C9D22003EE5F3 /* CoreData.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 6FBABA542A3C9D21003EE5F3 /* CoreData.framework */; };
 		6FBABA5A2A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA582A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodeld */; };
 		6FBABA5D2A3CA205003EE5F3 /* CoreDataManager.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */; };
+		6FDBC3482A8502F400B32458 /* DetailEntity.swift in Sources */ = {isa = PBXBuildFile; fileRef = 6FDBC3472A8502F400B32458 /* DetailEntity.swift */; };
 /* End PBXBuildFile section */
 
 /* Begin PBXContainerItemProxy section */
@@ -136,6 +137,7 @@
 		6FBABA542A3C9D21003EE5F3 /* CoreData.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = CoreData.framework; path = System/Library/Frameworks/CoreData.framework; sourceTree = SDKROOT; };
 		6FBABA592A3C9DF9003EE5F3 /* SearchEntityCoreDataModel.xcdatamodel */ = {isa = PBXFileReference; lastKnownFileType = wrapper.xcdatamodel; path = SearchEntityCoreDataModel.xcdatamodel; sourceTree = "<group>"; };
 		6FBABA5C2A3CA205003EE5F3 /* CoreDataManager.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = CoreDataManager.swift; sourceTree = "<group>"; };
+		6FDBC3472A8502F400B32458 /* DetailEntity.swift */ = {isa = PBXFileReference; lastKnownFileType = sourcecode.swift; path = DetailEntity.swift; sourceTree = "<group>"; };
 /* End PBXFileReference section */
 
 /* Begin PBXFrameworksBuildPhase section */
@@ -385,6 +387,7 @@
 				6FBABA432A3B8CAD003EE5F3 /* DetailViewController.swift */,
 				6FBABA452A3B8D01003EE5F3 /* DetailInteractor.swift */,
 				6FBABA472A3B8D35003EE5F3 /* DetailPresenter.swift */,
+				6FDBC3472A8502F400B32458 /* DetailEntity.swift */,
 				6FBABA492A3B8DA1003EE5F3 /* DetailRouter.swift */,
 			);
 			path = Detail;
@@ -561,6 +564,7 @@
 				6FB536542A3603ED00FAB6C3 /* MainViewController.swift in Sources */,
 				6FB536262A3530BE00FAB6C3 /* HomeInteractor.swift in Sources */,
 				6FB536572A362A7900FAB6C3 /* NSLayoutConstraint+Extension.swift in Sources */,
+				6FDBC3482A8502F400B32458 /* DetailEntity.swift in Sources */,
 				6FB536242A35304E00FAB6C3 /* HomePresenter.swift in Sources */,
 				6FB536032A352DBC00FAB6C3 /* SceneDelegate.swift in Sources */,
 				6FB536312A35338F00FAB6C3 /* SplashRouter.swift in Sources */,

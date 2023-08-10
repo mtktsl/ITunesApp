@@ -23,6 +23,16 @@ extension DetailPresenter {
         static let floatingPlayerStartupLocation: FloatingViewManager.FloatingLocation = .bottomLeft
         static let floatingPlayerPipSize = CGSize(width: 180, height: 101.25)
     }
+    
+    enum PopupMessages {
+        static let coreDataErrorTitle = "Favorite Toggle Error"
+        static let coreDataErrorMessage = "Something went wrong. Please restart your app."
+        static let coreDataErrorOkOption = "OK"
+        
+        static let coreDataSuccessTitle = "Favorite Toggle Success"
+        static let coreDataSuccessMessage = "Favorite status has been successfully changed."
+        static let coreDataSuccessOkOption = "OK"
+    }
 }
 
 protocol DetailPresenterProtocol {
@@ -36,6 +46,7 @@ final class DetailPresenter {
     unowned var view: DetailViewControllerProtocol!
     let interactor: DetailInteractorProtocol!
     let router: DetailRouterProtocol!
+    var mediaPlayer: MediaPlayerProtocol
     
     private(set) var data: SearchCellEntity?
     
@@ -43,18 +54,42 @@ final class DetailPresenter {
         view: DetailViewControllerProtocol!,
         interactor: DetailInteractorProtocol!,
         router: DetailRouterProtocol!,
-        data: SearchCellEntity?
+        data: SearchCellEntity?,
+        mediaPlayer: MediaPlayerProtocol = MediaPlayer.shared
     ) {
         self.view = view
         self.interactor = interactor
         self.router = router
         self.data = data
+        self.mediaPlayer = mediaPlayer
+    }
+    
+    private func generateCoreDataErrorPopup() {
+        view.showPopup(
+            title: PopupMessages.coreDataErrorTitle,
+            message: PopupMessages.coreDataErrorMessage,
+            okOption: PopupMessages.coreDataErrorOkOption,
+            cancelOption: nil,
+            onOk: nil,
+            onCancel: nil
+        )
+    }
+    
+    private func generateCoreDataSuccessPopup() {
+        view.showPopup(
+            title: PopupMessages.coreDataSuccessTitle,
+            message: PopupMessages.coreDataSuccessMessage,
+            okOption: PopupMessages.coreDataSuccessOkOption,
+            cancelOption: nil,
+            onOk: nil,
+            onCancel: nil
+        )
     }
 }
 
 extension DetailPresenter: DetailPresenterProtocol {
     func onPlayTap() {
-        MediaPlayer.shared.play(
+        mediaPlayer.play(
             data?.previewURLString,
             playingTitle: data?.trackName,
             startUpLocation: Constants.floatingPlayerStartupLocation,
@@ -115,10 +150,18 @@ extension DetailPresenter: DetailPresenterProtocol {
     func viewDidAppear() {
         view.showLoading()
     }
-    
 }
 
 extension DetailPresenter: DetailInteractorOutputProtocol {
+    func onCoreDataResult(result: DetailEntity.CoreDataResult) {
+        switch result {
+        case .success:
+            generateCoreDataSuccessPopup()
+        case .failure(_):
+            generateCoreDataErrorPopup()
+        }
+    }
+    
     func onImageSuccess(_ data: Data) {
         view.setupImageView(data)
     }

@@ -40,15 +40,18 @@ final class FavoritesPresenter {
     var collection = [SearchCellEntity]()
     var filteredCollection = [SearchCellEntity]()
     var isFiltering = false
+    var mediaPlayer: MediaPlayerProtocol
     
     init(
         view: FavoritesViewControllerProtocol!,
         router: FavoritesRouterProtocol!,
-        interactor: FavoritesInteractorProtocol!
+        interactor: FavoritesInteractorProtocol!,
+        mediaPlayer: MediaPlayerProtocol = MediaPlayer.shared
     ) {
         self.view = view
         self.router = router
         self.interactor = interactor
+        self.mediaPlayer = mediaPlayer
     }
 }
 
@@ -62,7 +65,7 @@ extension FavoritesPresenter: FavoritesPresenterProtocol {
         title: String?
     ) {
         view.endEditting()
-        MediaPlayer.shared.play(
+        mediaPlayer.play(
             urlString,
             playingTitle: title,
             startUpLocation: Constants.floatingPlayerStartupLocation,
