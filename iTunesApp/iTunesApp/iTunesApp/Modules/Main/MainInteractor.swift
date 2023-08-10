@@ -19,8 +19,10 @@ protocol MainInteractorOutputProtocol: AnyObject {
 
 final class MainInteractor {
     var output: MainInteractorOutputProtocol!
-    init() {
-        NetworkStatusObserver.shared.delegates.append(WeakRef(self))
+    var networkStatusService: NetworkStatusObserverProtocol
+    init(networkStatusService: NetworkStatusObserverProtocol = NetworkStatusObserver.shared) {
+        self.networkStatusService = networkStatusService
+        self.networkStatusService.delegates.append(.init(self))
     }
 }
 

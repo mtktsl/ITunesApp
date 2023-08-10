@@ -19,11 +19,12 @@ protocol FavoritesInteractorOutputProtocol {
 final class FavoritesInteractor {
     var output: FavoritesInteractorOutputProtocol!
     var appDelegate: AppDelegate!
+    var coreDataService: CoreDataManagerProtocol = CoreDataManager.shared
 }
 
 extension FavoritesInteractor: FavoritesInteractorProtocol {
     func fetchFavorites() {
-        let data = CoreDataManager.shared.fetchFavorites()
+        let data = coreDataService.fetchFavorites()
         output.onFavoritesResult(data)
     }
 }

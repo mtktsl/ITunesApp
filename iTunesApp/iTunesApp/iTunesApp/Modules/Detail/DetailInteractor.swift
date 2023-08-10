@@ -18,11 +18,18 @@ protocol DetailInteractorProtocol {
 protocol DetailInteractorOutputProtocol {
     func onImageSuccess(_ data: Data)
     func onImageError()
+    
+    func onCoreDataResult(result: DetailEntity.CoreDataResult)
 }
 
 final class DetailInteractor {
     var output: DetailInteractorOutputProtocol!
-    let service: iTunesAPIProtocol = iTunesAPI()
+    let webService: iTunesAPIProtocol = iTunesAPI()
+    var coreDataService: CoreDataManagerProtocol = CoreDataManager.shared
+    var imageDataTask: URLSessionDataTask?
+    deinit {
+        imageDataTask?.cancel()
+    }
 }
 
 extension DetailInteractor: DetailInteractorProtocol {
@@ -31,11 +38,19 @@ extension DetailInteractor: DetailInteractorProtocol {
     }
     
     func addFavorite(_ data: SearchCellEntity) {
-        CoreDataManager.shared.addFavorite(data)
+        if coreDataService.addFavorite(data) {
+            output.onCoreDataResult(result: .success)
+        } else {
+            output.onCoreDataResult(result: .failure(error: .addFailure))
+        }
     }
     
     func removeFavorite(_ data: SearchCellEntity) {
-        CoreDataManager.shared.removeFavorite(data)
+        if coreDataService.removeFavorite(data) {
+            output.onCoreDataResult(result: .success)
+        } else {
+            output.onCoreDataResult(result: .failure(error: .removeFailure))
+        }
     }
     
     func downloadImage(_ urlString: String?) {
@@ -45,7 +60,7 @@ extension DetailInteractor: DetailInteractorProtocol {
             return
         }
         
-        service.fetchImage(urlString) { [weak self] result in
+        imageDataTask = webService.fetchImage(urlString) { [weak self] result in
             guard let self else { return }
             switch result {
             case .success(let data):

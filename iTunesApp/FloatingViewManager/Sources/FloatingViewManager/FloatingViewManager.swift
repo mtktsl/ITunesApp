@@ -1,5 +1,6 @@
 import UIKit
 
+//MARK: - Constants
 extension FloatingViewManager {
     fileprivate enum Sizes {
         //static let defaultPipSize = CGSize(width: 180, height: 101.25)
@@ -7,9 +8,36 @@ extension FloatingViewManager {
     }
 }
 
+//MARK: - Protocol Definition
+public protocol FloatingViewManagerProtocol {
+    var view: UIView? { get }
+    var viewCurrentSize: FloatingViewManager.SizeModel? { get }
+    var floatingLocation: FloatingViewManager.FloatingLocation { get }
+    var isPanGestureEnabled: Bool { get set }
+    var doesStickToEdgesAfterPanGesture: Bool { get set }
+    var resizeAnimationDuration: Double { get set }
+    var moveAnimationDuration: Double { get set }
+    
+    func attach(
+        _ view: UIView,
+        startUpLocation: FloatingViewManager.FloatingLocation,
+        startUpSize: FloatingViewManager.SizeModel
+    )
+    func bringViewToFront()
+    func move(toLocation: FloatingViewManager.FloatingLocation)
+    func move(toPoint: CGPoint)
+    func resizeView(
+        to sizeModel: FloatingViewManager.SizeModel,
+        completion: (() -> Void)?
+    )
+    func removeView()
+}
+
+//MARK: - Class Definition
 public final class FloatingViewManager: NSObject {
     
-    public static let shared = FloatingViewManager()
+    //MARK: - Variable definitions
+    public static let shared: FloatingViewManagerProtocol = FloatingViewManager()
     
     public private(set) weak var view: UIView?
     private var recognizer: UIPanGestureRecognizer?
@@ -59,7 +87,8 @@ public final class FloatingViewManager: NSObject {
         super.init()
     }
     
-    var initialCenter = CGPoint()
+    //MARK: - Private function implementations
+    private var initialCenter = CGPoint()
     @objc private func onViewPan(_ gestureRecognizer: UIPanGestureRecognizer) {
         guard isPanGestureEnabled,
               let view = gestureRecognizer.view
@@ -91,7 +120,7 @@ public final class FloatingViewManager: NSObject {
         }
     }
     
-    func setFloatingInfo(isLeft: Bool, isBottom: Bool) {
+    private func setFloatingInfo(isLeft: Bool, isBottom: Bool) {
         if isLeft && isBottom {
             floatingLocation = .bottomLeft
         } else if isLeft && !isBottom {
@@ -147,18 +176,7 @@ public final class FloatingViewManager: NSObject {
         move(view: view, toPoint: targetPoint)
     }
     
-    public func move(toLocation: FloatingLocation) {
-        guard let view else { return }
-        move(view: view, toLocation: toLocation)
-        floatingLocation = toLocation
-    }
-    
-    public func move(toPoint: CGPoint) {
-        guard let view else { return }
-        move(view: view, toPoint: toPoint)
-    }
-    
-    func layoutView(
+    private func layoutView(
         completion: (() -> Void)? = nil
     ) {
         guard let window = view?.superview
@@ -189,6 +207,10 @@ public final class FloatingViewManager: NSObject {
             completion?()
         }
     }
+}
+
+// ------- MARK: - Protocol Implemenetation
+extension FloatingViewManager: FloatingViewManagerProtocol {
     
     public func attach(
         _ view: UIView,
@@ -220,6 +242,7 @@ public final class FloatingViewManager: NSObject {
         rootWindow = window
     }
     
+    
     public func bringViewToFront() {
         guard let window = UIApplication.shared.windows.first,
               let view
@@ -227,10 +250,17 @@ public final class FloatingViewManager: NSObject {
         
         window.bringSubviewToFront(view)
     }
-}
-
-// ------- MARK: - Protocol Implemenetation
-extension FloatingViewManager {
+    
+    public func move(toLocation: FloatingLocation) {
+        guard let view else { return }
+        move(view: view, toLocation: toLocation)
+        floatingLocation = toLocation
+    }
+    
+    public func move(toPoint: CGPoint) {
+        guard let view else { return }
+        move(view: view, toPoint: toPoint)
+    }
     
     public func resizeView(
         to sizeModel: SizeModel,

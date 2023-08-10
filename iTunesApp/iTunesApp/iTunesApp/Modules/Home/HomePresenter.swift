@@ -60,6 +60,8 @@ final class HomePresenter {
     unowned var view: HomeViewControllerProtocol!
     let router: HomeRouterProtocol!
     let interactor: HomeInteractorProtocol!
+    var floatingViewManager: FloatingViewManagerProtocol
+    var mediaPlayer: MediaPlayerProtocol
     
     var isPopupOpen = false
     
@@ -70,11 +72,15 @@ final class HomePresenter {
     init(
         view: HomeViewControllerProtocol,
         router: HomeRouterProtocol,
-        interactor: HomeInteractorProtocol
+        interactor: HomeInteractorProtocol,
+        floatingViewManager: FloatingViewManagerProtocol = FloatingViewManager.shared,
+        mediaPlayer: MediaPlayerProtocol = MediaPlayer.shared
     ) {
         self.view = view
         self.router = router
         self.interactor = interactor
+        self.floatingViewManager = floatingViewManager
+        self.mediaPlayer = mediaPlayer
     }
 }
 
@@ -92,7 +98,7 @@ extension HomePresenter: HomePresenterProtocol {
         title: String?
     ) {
         view.endEditting()
-        MediaPlayer.shared.play(
+        mediaPlayer.play(
             urlString,
             playingTitle: title,
             startUpLocation: Constants.floatingPlayerStartupLocation,
@@ -113,17 +119,17 @@ extension HomePresenter: HomePresenterProtocol {
     
     func filterDidChange(_ filter: String) {
         view.showLoading()
-        FloatingViewManager.shared.bringViewToFront()
+        floatingViewManager.bringViewToFront()
     }
     
     func searchDidChange(_ text: String) {
         view.showLoading()
-        FloatingViewManager.shared.bringViewToFront()
+        floatingViewManager.bringViewToFront()
     }
     
     func viewDidAppear() {
         interactor.reloadCoreData()
-        view.startSearchUpdates(Constants.searchInterval)
+        //view.startSearchUpdates(Constants.searchInterval)
     }
     
     
@@ -131,22 +137,12 @@ extension HomePresenter: HomePresenterProtocol {
         searchText: String,
         filter: String
     ) {
-        if lastSearch == searchText && lastFilter == filter {
-            view.hideLoading()
-            return
-        }
-        lastSearch = searchText
-        lastFilter = filter
         view.showLoading()
-        FloatingViewManager.shared.bringViewToFront()
+        floatingViewManager.bringViewToFront()
         
-        guard !searchText.isEmpty else {
-            view.hideLoading()
-            return
-        }
         interactor.performQuery(
             searchText: searchText,
-            filter: filter
+            filterText: filter
         )
     }
     
