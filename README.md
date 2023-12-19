@@ -12,7 +12,7 @@
 ## Module names that are created with the project:
 <strong>&bull; SegmentedPickerView:</strong> Horizontal filter selector that is notifying it's delegate when selection happens.
 <br/><strong>&bull; iTunesApi:</strong> It is used to fetch itunes data info from web.
-<br/><strong>&bull; NetworkStatusObserver:</strong> It is used to observer connection availability.
+<br/><strong>&bull; NetworkStatusObserver:</strong> It is used to observe connection availability.
 <br/><strong>&bull; MediaPlayerView:</strong> This packages is used to play media in a UIView wheather it is a sound or video.
 <br/><strong>&bull; FloatingViewManager:</strong> This package is attaching floating views into Window objects and animating them when pan gesture happens if it's enabled. It is used to create a picture in picture media playing feature.
 
